@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: block;
+  height: 60px;
+  background: #293441;
+  line-height: 60px;
+}
+
+header button {
+  height: 36px;
+  width: 40px;
+  background: url('images/button1.png') no-repeat 0 0;
+  border: none;
+  margin-left: 250px;
+  margin-top: 15px;
+  float: left;
+}
+
+.left_header {
+  height: 60px;
+  float: left;
+}
+
+.right_header {
+  height: 60px;
+  float: right;
+  font-size: 14pt;
+  color: #B0B4B9;
+  margin-right: 50px;
+}
+
+.devider {
+  width: 1px;
+  height: 40px;
+  background: #525B66;
+  float: left;
+  margin: 10px 20px;
+}
+
+.envelope, .bell, .link_UA {
+  float: left;
+}
+
+.link_UA a {
+  text-decoration: none;
+  font-family: Helvetica;
+  font-size: 12pt;
+}
+
+a.icon {
+  padding-left: 35px;
+  background-position: center left;
+  background-repeat: no-repeat;
+  background-image: url('images/ua30.png');
+}
+
+.link_UA a:link, .envelope a:link, .bell a:link {
+  color: #B0B4B9;
+}
+
+.link_UA a:visited, .bell a:visited, .envelope a:visited {
+  color: #B0B4B9;
+}
+
+.link_UA a:hover, .bell a:hover, .envelope a:hover {
+  color: #D1D6DA;
+}
+
+.sidebar {
+  background: #343F4E;
+  border-top: solid 1px #3E4856;
+  float: left;
+  width: 220px;
+}
+
+.navigation a:hover, .dropdown-inside a:hover {
+  background: #323D4B;
+}
+
+.navigation li {
+  display: block;
+}
+
+.main {
+  color: #B0B4B9;
+  line-height: 40px;
+  font-family: Helvetica;
+  font-size: 7pt;
+  letter-spacing: .2px;
+  padding-left: 10px;
+  white-space: nowrap;
+}
+
+.navigation a {
+  text-decoration: none;
+  font-family: Helvetica;
+  line-height: 45px;
+  font-size: 10pt;
+  display: block;
+  padding-left: 20px;
+}
+
+.navigation a:link, .navigation a:visited {
+  color: #B0B4B9;
+}
+
+.navigation a:hover {
+  color: white;
+}
+
+ul.dropdown-inside a {
+  padding-left: 40px;
+}
+
+li.active {
+  border-left: solid 4px #27ABB6;
+}
+
+li.noactive {
+  border-left: solid 4px #323D4B;
+}
+
+.menu_icon {
+  float: left;
+}
+
+.menu_name {
+  padding-left: 15px;
+}
+
+.content {
+  margin-left: 220px;
+}
