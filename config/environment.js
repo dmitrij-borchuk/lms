@@ -20,6 +20,13 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+    firebase: {
+      apiKey: 'AIzaSyBTce1XmHsqhSBPxahyFsFldEnA3LwQIhQ',
+      authDomain: 'lms-prototype-2b5f3.firebaseapp.com',
+      databaseURL: 'https://lms-prototype-2b5f3.firebaseio.com',
+      storageBucket: 'lms-prototype-2b5f3.appspot.com',
+      messagingSenderId: '602043991664'
     }
   };
 
