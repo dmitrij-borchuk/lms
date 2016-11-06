@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  classNames: ['login-form'],
   actions: {
     login() {
       let { identification, password } = this.getProperties('identification', 'password');

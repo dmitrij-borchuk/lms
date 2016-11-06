@@ -1,12 +1,1 @@
-{{app-header}}
-{{#if session.isAuthenticated}}
-  {{side-menu}}
-
-  <div class="content">
-    {{outlet}}
-  </div>
-  Logged in as {{session.currentUser.displayName}}
-  <button {{action "signOut"}}>Sign out</button>
-{{else}}
-  <button {{action "signIn" "Google"}}>Sign in with Google</button>
-{{/if}}
+{{outlet}}

@@ -25,7 +25,7 @@
           <label for="remember">Keep me signed in</label>
         </div>
         <div class="form-sign-up">Don't have an account yet? <a ui-sref="register" class="register-btn">Create an account</a></div>
-        <div *ngFor="let error of errors; trackBy:$index" class="error">{{error}}</div>
+        <div ngFor="let error of errors; trackBy:$index" class="error">{{error}}</div>
       </form>
       <div class="login-button"></div>
     </div>

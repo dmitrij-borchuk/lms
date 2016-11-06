@@ -16,7 +16,6 @@ export default Service.extend({
       type: 'GET',
       dataType: 'json'
     }).then((response) => {
-      console.log(response);
       return {
         // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
         access_token: response.access_token,

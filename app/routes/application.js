@@ -1,33 +1,12 @@
-// import Ember from 'ember';
-
-// export default Ember.Route.extend({
-//   beforeModel: function() {
-//     // return this.get('session').fetch().catch(function() {});
-//     console.log( this.get('session') );
-//   },
-//   actions: {
-//     signIn: function(provider) {
-//       // this.get('session').open('firebase', { provider: provider}).then(function(data) {
-//       //   console.log(data.currentUser);
-//       // });
-//     },
-//     signOut: function() {
-//       // this.get('session').close();
-//     }
-//   }
-// });
-
-
 import Ember from 'ember';
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-const { inject: { service }, Route } = Ember;
+const { inject: { service }, RSVP, Route } = Ember;
 
 export default Route.extend(ApplicationRouteMixin, {
-  sessionAccount: service('auth'),
+  auth: service('auth'),
 
   beforeModel() {
-    return this._loadCurrentUser();
   },
 
   sessionAuthenticated() {
@@ -36,6 +15,6 @@ export default Route.extend(ApplicationRouteMixin, {
   },
 
   _loadCurrentUser() {
-    return this.get('sessionAccount').loadCurrentUser();
+    return this.get('auth').loadCurrentUser();
   }
 });

@@ -1,7 +1,11 @@
-<h2>List of Users</h2>
-<ul>
-  {{#each model as |scientist|}}
-    <li>{{scientist}}</li>
-  {{/each}}
-</ul>
-{{outlet}}
+{{app-header}}
+{{side-menu}}
+
+<div class="content">
+  <h2>List of Users</h2>
+  <ul>
+    {{#each model as |scientist|}}
+      <li>{{scientist}}</li>
+    {{/each}}
+  </ul>
+</div>

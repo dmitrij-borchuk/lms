@@ -20,4 +20,12 @@
       <a href="#" class="icon">Українська</a>
     </div>
   </div>
+
+  {{#if session.isAuthenticated}}
+    Logged in as {{session.currentUser.displayName}}
+    <button {{action "signOut"}}>Sign out</button>
+  {{else}}
+    <button {{action "signIn" "Google"}}>Sign in with Google</button>
+  {{/if}}
+
 </header>
