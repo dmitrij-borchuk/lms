@@ -39,8 +39,10 @@
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
+    "ember-simple-auth": "1.1.0",
     "ember-welcome-page": "^1.0.3",
-    "emberfire": "2.0.4",
-    "loader.js": "^4.0.10"
+    "glob": "^4.5.3",
+    "loader.js": "^4.0.10",
+    "morgan": "^1.7.0"
   }
 }

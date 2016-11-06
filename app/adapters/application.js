@@ -1,5 +1,8 @@
-// import FirebaseAdapter from 'emberfire';
-import FirebaseAdapter from 'emberfire/adapters/firebase';
+import DS from 'ember-data';
+import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-export default FirebaseAdapter.extend({
+const { JSONAPIAdapter } = DS;
+
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
+  authorizer: 'authorizer:application'
 });
