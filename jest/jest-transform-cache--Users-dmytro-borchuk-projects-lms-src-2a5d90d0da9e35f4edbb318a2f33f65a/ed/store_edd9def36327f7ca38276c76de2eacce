@@ -1,0 +1,59 @@
+/* istanbul ignore next */'use strict';Object.defineProperty(exports, "__esModule", { value: true });var cov_1yfz3xal41 = function () {var path = '/Users/dmytro.borchuk/projects/lms/src/app/store.js',hash = '6e20aadef2ba02632a42da7f93507682913b4e2b',global = new Function('return this')(),gcv = '__coverage__',coverageData = { path: '/Users/dmytro.borchuk/projects/lms/src/app/store.js', statementMap: { '0': { start: { line: 11, column: 23 }, end: { line: 11, column: 45 } }, '1': { start: { line: 17, column: 22 }, end: { line: 20, column: 3 } }, '2': { start: { line: 22, column: 20 }, end: { line: 24, column: 3 } }, '3': { start: { line: 29, column: 4 }, end: { line: 32, column: 59 } }, '4': { start: { line: 35, column: 16 }, end: { line: 39, column: 3 } }, '5': { start: { line: 42, column: 2 }, end: { line: 42, column: 37 } }, '6': { start: { line: 43, column: 2 }, end: { line: 43, column: 27 } }, '7': { start: { line: 58, column: 2 }, end: { line: 58, column: 15 } } }, fnMap: { '0': { name: 'configureStore', decl: { start: { line: 13, column: 24 }, end: { line: 13, column: 38 } }, loc: { start: { line: 13, column: 67 }, end: { line: 59, column: 1 } } } }, branchMap: { '0': { loc: { start: { line: 13, column: 39 }, end: { line: 13, column: 56 } }, type: 'default-arg', locations: [{ start: { line: 13, column: 54 }, end: { line: 13, column: 56 } }] }, '1': { loc: { start: { line: 29, column: 4 }, end: { line: 32, column: 59 } }, type: 'cond-expr', locations: [{ start: { line: 32, column: 6 }, end: { line: 32, column: 49 } }, { start: { line: 32, column: 52 }, end: { line: 32, column: 59 } }] }, '2': { loc: { start: { line: 29, column: 4 }, end: { line: 31, column: 47 } }, type: 'binary-expr', locations: [{ start: { line: 29, column: 4 }, end: { line: 29, column: 41 } }, { start: { line: 30, column: 4 }, end: { line: 30, column: 30 } }, { start: { line: 31, column: 4 }, end: { line: 31, column: 47 } }] } }, s: { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0 }, f: { '0': 0 }, b: { '0': [0], '1': [0, 0], '2': [0, 0, 0] }, _coverageSchema: '332fd63041d2c1bcb487cc26dd0d5f7d97098a6c' },coverage = global[gcv] || (global[gcv] = {});if (coverage[path] && coverage[path].hash === hash) {return coverage[path];}coverageData.hash = hash;return coverage[path] = coverageData;}();var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {return typeof obj;} : function (obj) {return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;}; /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        * Create the store with asynchronously loaded reducers
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */exports.default =
+
+
+
+
+
+
+
+
+
+configureStore;var /* istanbul ignore next */_redux = require('redux');var /* istanbul ignore next */_immutable = require('immutable');var /* istanbul ignore next */_reactRouterRedux = require('react-router-redux');var /* istanbul ignore next */_reduxSaga = require('redux-saga'); /* istanbul ignore next */var _reduxSaga2 = _interopRequireDefault(_reduxSaga);var /* istanbul ignore next */_reducers = require('./reducers'); /* istanbul ignore next */var _reducers2 = _interopRequireDefault(_reducers);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var sagaMiddleware = /* istanbul ignore next */(++cov_1yfz3xal41.s[0], /* istanbul ignore next */(0, _reduxSaga2.default)());function configureStore() {/* istanbul ignore next */var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : (++cov_1yfz3xal41.b[0][0], {}); /* istanbul ignore next */var history = arguments[1]; /* istanbul ignore next */++cov_1yfz3xal41.f[0];
+  // Create the store with two middlewares
+  // 1. sagaMiddleware: Makes redux-sagas work
+  // 2. routerMiddleware: Syncs the location/URL path to the state
+  var middlewares = /* istanbul ignore next */(++cov_1yfz3xal41.s[1], [
+  sagaMiddleware,
+  /* istanbul ignore next */(0, _reactRouterRedux.routerMiddleware)(history)]);
+
+
+  var enhancers = /* istanbul ignore next */(++cov_1yfz3xal41.s[2], [
+  /* istanbul ignore next */_redux.applyMiddleware.apply( /* istanbul ignore next */undefined, middlewares)]);
+
+
+  // If Redux DevTools Extension is installed use it, otherwise use Redux compose
+  /* eslint-disable no-underscore-dangle */
+  var composeEnhancers = /* istanbul ignore next */(++cov_1yfz3xal41.s[3],
+  /* istanbul ignore next */(++cov_1yfz3xal41.b[2][0], process.env.NODE_ENV !== 'production') && /* istanbul ignore next */(++cov_1yfz3xal41.b[2][1],
+  /* istanbul ignore next */(typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') && /* istanbul ignore next */(++cov_1yfz3xal41.b[2][2],
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ? /* istanbul ignore next */(++cov_1yfz3xal41.b[1][0],
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) : /* istanbul ignore next */(++cov_1yfz3xal41.b[1][1], _redux.compose));
+  /* eslint-enable */
+
+  var store = /* istanbul ignore next */(++cov_1yfz3xal41.s[4], /* istanbul ignore next */(0, _redux.createStore)(
+  /* istanbul ignore next */(0, _reducers2.default)(),
+  /* istanbul ignore next */(0, _immutable.fromJS)(initialState),
+  /* istanbul ignore next */composeEnhancers.apply( /* istanbul ignore next */undefined, enhancers)));
+
+
+  // Extensions
+  /* istanbul ignore next */++cov_1yfz3xal41.s[5];store.runSaga = sagaMiddleware.run; /* istanbul ignore next */++cov_1yfz3xal41.s[6];
+  store.asyncReducers = {}; // Async reducer registry
+
+  // Make reducers hot reloadable, see http://mxs.is/googmo
+  /* istanbul ignore next */
+  if (module.hot) {
+    module.hot.accept('./reducers', function () {
+      /* istanbul ignore next */new Promise(function (resolve) {resolve(require('./reducers'));}).then(function (reducerModule) {
+        var createReducers = reducerModule.default;
+        var nextReducers = createReducers(store.asyncReducers);
+
+        store.replaceReducer(nextReducers);
+      });
+    });
+  } /* istanbul ignore next */++cov_1yfz3xal41.s[7];
+
+  return store;
+}

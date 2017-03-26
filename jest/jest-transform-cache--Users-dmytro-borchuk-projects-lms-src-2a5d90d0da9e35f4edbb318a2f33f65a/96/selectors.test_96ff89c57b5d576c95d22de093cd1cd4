@@ -1,0 +1,15 @@
+/* istanbul ignore next */'use strict';var /* istanbul ignore next */_immutable = require('immutable');
+
+var /* istanbul ignore next */_selectors = require('../selectors');
+
+
+
+describe('selectLanguage', function () {
+  it('should select the global state', function () {
+    var globalState = /* istanbul ignore next */(0, _immutable.fromJS)({});
+    var mockedState = /* istanbul ignore next */(0, _immutable.fromJS)({
+      language: globalState });
+
+    expect( /* istanbul ignore next */(0, _selectors.selectLanguage)(mockedState)).toEqual(globalState);
+  });
+});

@@ -1,0 +1,3 @@
+/* istanbul ignore next */'use strict';
+
+/* istanbul ignore next */require('babel-polyfill');

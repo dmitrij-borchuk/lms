@@ -1,0 +1,20 @@
+/* istanbul ignore next */'use strict';var /* istanbul ignore next */_immutable = require('immutable');
+
+var /* istanbul ignore next */_reducer = require('../reducer'); /* istanbul ignore next */var _reducer2 = _interopRequireDefault(_reducer);
+var /* istanbul ignore next */_constants = require('../constants'); /* istanbul ignore next */function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+
+
+describe('languageProviderReducer', function () {
+  it('returns the initial state', function () {
+    expect( /* istanbul ignore next */(0, _reducer2.default)(undefined, {})).toEqual( /* istanbul ignore next */(0, _immutable.fromJS)({
+      locale: 'en' }));
+
+  });
+
+  it('changes the locale', function () {
+    expect( /* istanbul ignore next */(0, _reducer2.default)(undefined, { type: /* istanbul ignore next */_constants.CHANGE_LOCALE, locale: 'de' }).toJS()).toEqual({
+      locale: 'de' });
+
+  });
+});

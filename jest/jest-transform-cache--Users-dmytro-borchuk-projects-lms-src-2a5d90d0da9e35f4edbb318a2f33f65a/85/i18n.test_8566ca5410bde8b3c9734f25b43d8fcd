@@ -1,0 +1,32 @@
+/* istanbul ignore next */'use strict';
+
+
+jest.mock('../translations/en.json', function () /* istanbul ignore next */{return (
+    {
+      message1: 'default message',
+      message2: 'default message 2' });});var /* istanbul ignore next */_constants = require('../containers/App/constants');var /* istanbul ignore next */_i18n = require('../i18n');
+
+
+
+var esTranslationMessages = {
+  message1: 'mensaje predeterminado',
+  message2: '' };
+
+
+describe('formatTranslationMessages', function () {
+  it('should build only defaults when DEFAULT_LOCALE', function () {
+    var result = /* istanbul ignore next */(0, _i18n.formatTranslationMessages)( /* istanbul ignore next */_constants.DEFAULT_LOCALE, { a: 'a' });
+
+    expect(result).toEqual({ a: 'a' });
+  });
+
+
+  it('should combine default locale and current locale when not DEFAULT_LOCALE', function () {
+    var result = /* istanbul ignore next */(0, _i18n.formatTranslationMessages)('', esTranslationMessages);
+
+    expect(result).toEqual({
+      message1: 'mensaje predeterminado',
+      message2: 'default message 2' });
+
+  });
+});

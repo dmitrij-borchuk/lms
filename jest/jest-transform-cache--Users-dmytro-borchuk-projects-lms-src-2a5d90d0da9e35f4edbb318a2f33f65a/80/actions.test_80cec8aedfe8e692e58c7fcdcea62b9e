@@ -1,0 +1,19 @@
+/* istanbul ignore next */'use strict';var /* istanbul ignore next */_actions = require('../actions');
+
+
+
+var /* istanbul ignore next */_constants = require('../constants');
+
+
+
+describe('LanguageProvider actions', function () {
+  describe('Change Local Action', function () {
+    it('has a type of CHANGE_LOCALE', function () {
+      var expected = {
+        type: /* istanbul ignore next */_constants.CHANGE_LOCALE,
+        locale: 'de' };
+
+      expect( /* istanbul ignore next */(0, _actions.changeLocale)('de')).toEqual(expected);
+    });
+  });
+});

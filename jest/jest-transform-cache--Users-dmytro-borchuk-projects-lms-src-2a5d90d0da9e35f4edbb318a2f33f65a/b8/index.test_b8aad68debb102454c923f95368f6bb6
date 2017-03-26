@@ -1,0 +1,17 @@
+/* istanbul ignore next */'use strict';var /* istanbul ignore next */_react = require('react'); /* istanbul ignore next */var _react2 = _interopRequireDefault(_react);
+var /* istanbul ignore next */_reactIntl = require('react-intl');
+var /* istanbul ignore next */_enzyme = require('enzyme');
+
+var /* istanbul ignore next */_index = require('../index'); /* istanbul ignore next */var _index2 = _interopRequireDefault(_index);
+var /* istanbul ignore next */_messages = require('../messages'); /* istanbul ignore next */var _messages2 = _interopRequireDefault(_messages);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+describe('<NotFoundPage />', function () {
+  it('should render the page message', function () {
+    var renderedComponent = /* istanbul ignore next */(0, _enzyme.shallow)(
+    /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_index2.default, /* istanbul ignore next */null));
+
+    expect(renderedComponent.contains(
+    /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_reactIntl.FormattedMessage, /* istanbul ignore next */_messages2.default.header))).
+    toEqual(true);
+  });
+});

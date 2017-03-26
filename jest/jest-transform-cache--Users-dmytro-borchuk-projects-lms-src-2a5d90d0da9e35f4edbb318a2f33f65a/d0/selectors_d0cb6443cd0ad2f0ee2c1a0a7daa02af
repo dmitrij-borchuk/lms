@@ -1,0 +1,19 @@
+/* istanbul ignore next */'use strict';Object.defineProperty(exports, "__esModule", { value: true });var cov_nyyyj9hyp = function () {var path = '/Users/dmytro.borchuk/projects/lms/src/app/containers/App/selectors.js',hash = '2e61d8bb92440a204ee7b288084a53750e3d4e29',global = new Function('return this')(),gcv = '__coverage__',coverageData = { path: '/Users/dmytro.borchuk/projects/lms/src/app/containers/App/selectors.js', statementMap: { '0': { start: { line: 2, column: 32 }, end: { line: 16, column: 1 } }, '1': { start: { line: 6, column: 2 }, end: { line: 15, column: 4 } }, '2': { start: { line: 7, column: 25 }, end: { line: 7, column: 43 } }, '3': { start: { line: 9, column: 4 }, end: { line: 12, column: 5 } }, '4': { start: { line: 10, column: 6 }, end: { line: 10, column: 38 } }, '5': { start: { line: 11, column: 6 }, end: { line: 11, column: 47 } }, '6': { start: { line: 14, column: 4 }, end: { line: 14, column: 30 } } }, fnMap: { '0': { name: '(anonymous_0)', decl: { start: { line: 2, column: 32 }, end: { line: 2, column: 33 } }, loc: { start: { line: 2, column: 38 }, end: { line: 16, column: 1 } } }, '1': { name: '(anonymous_1)', decl: { start: { line: 6, column: 9 }, end: { line: 6, column: 10 } }, loc: { start: { line: 6, column: 20 }, end: { line: 15, column: 3 } } } }, branchMap: { '0': { loc: { start: { line: 9, column: 4 }, end: { line: 12, column: 5 } }, type: 'if', locations: [{ start: { line: 9, column: 4 }, end: { line: 12, column: 5 } }, { start: { line: 9, column: 4 }, end: { line: 12, column: 5 } }] } }, s: { '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0 }, f: { '0': 0, '1': 0 }, b: { '0': [0, 0] }, _coverageSchema: '332fd63041d2c1bcb487cc26dd0d5f7d97098a6c' },coverage = global[gcv] || (global[gcv] = {});if (coverage[path] && coverage[path].hash === hash) {return coverage[path];}coverageData.hash = hash;return coverage[path] = coverageData;}(); // makeSelectLocationState expects a plain JS object for the routing state
+var makeSelectLocationState = /* istanbul ignore next */(++cov_nyyyj9hyp.s[0], function () {/* istanbul ignore next */++cov_nyyyj9hyp.f[0];
+  var prevRoutingState = /* istanbul ignore next */void 0;
+  var prevRoutingStateJS = /* istanbul ignore next */void 0; /* istanbul ignore next */++cov_nyyyj9hyp.s[1];
+
+  return function (state) {/* istanbul ignore next */++cov_nyyyj9hyp.f[1];
+    var routingState = /* istanbul ignore next */(++cov_nyyyj9hyp.s[2], state.get('route')); // or state.route
+    /* istanbul ignore next */++cov_nyyyj9hyp.s[3];
+    if (!routingState.equals(prevRoutingState)) {/* istanbul ignore next */++cov_nyyyj9hyp.b[0][0];++cov_nyyyj9hyp.s[4];
+      prevRoutingState = routingState; /* istanbul ignore next */++cov_nyyyj9hyp.s[5];
+      prevRoutingStateJS = routingState.toJS();
+    } else /* istanbul ignore next */{++cov_nyyyj9hyp.b[0][1];}++cov_nyyyj9hyp.s[6];
+
+    return prevRoutingStateJS;
+  };
+}); /* istanbul ignore next */exports.
+
+
+makeSelectLocationState = makeSelectLocationState;

@@ -1,0 +1,49 @@
+/* istanbul ignore next */'use strict';var /* istanbul ignore next */_react = require('react'); /* istanbul ignore next */var _react2 = _interopRequireDefault(_react);
+var /* istanbul ignore next */_enzyme = require('enzyme');
+var /* istanbul ignore next */_reactIntl = require('react-intl');
+var /* istanbul ignore next */_reactRedux = require('react-redux');
+var /* istanbul ignore next */_reactRouter = require('react-router');
+
+var /* istanbul ignore next */_index = require('../index'); /* istanbul ignore next */var _index2 = _interopRequireDefault(_index);
+var /* istanbul ignore next */_store = require('../../../store'); /* istanbul ignore next */var _store2 = _interopRequireDefault(_store);
+
+var /* istanbul ignore next */_i18n = require('../../../i18n'); /* istanbul ignore next */function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+var messages = /* istanbul ignore next */(0, _reactIntl.defineMessages)({
+  someMessage: {
+    id: 'some.id',
+    defaultMessage: 'This is some default message',
+    en: 'This is some en message' } });
+
+
+
+describe('<LanguageProvider />', function () {
+  it('should render its children', function () {
+    var children = /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */'h1', /* istanbul ignore next */null, /* istanbul ignore next */'Test');
+    var renderedComponent = /* istanbul ignore next */(0, _enzyme.shallow)(
+    /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_index.LanguageProvider, /* istanbul ignore next */{ messages: messages, locale: 'en' },
+      children));
+
+
+    expect(renderedComponent.contains(children)).toBe(true);
+  });
+});
+
+describe('<ConnectedLanguageProvider />', function () {
+  var store = /* istanbul ignore next */void 0;
+
+  beforeAll(function () {
+    store = /* istanbul ignore next */(0, _store2.default)({}, /* istanbul ignore next */_reactRouter.browserHistory);
+  });
+
+  it('should render the default language messages', function () {
+    var renderedComponent = /* istanbul ignore next */(0, _enzyme.mount)(
+    /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_reactRedux.Provider, /* istanbul ignore next */{ store: store },
+      /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_index2.default, /* istanbul ignore next */{ messages: /* istanbul ignore next */_i18n.translationMessages },
+        /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_reactIntl.FormattedMessage, messages.someMessage))));
+
+
+
+    expect(renderedComponent.contains( /* istanbul ignore next */_react2.default.createElement( /* istanbul ignore next */_reactIntl.FormattedMessage, messages.someMessage))).toBe(true);
+  });
+});

@@ -1,0 +1,28 @@
+/* istanbul ignore next */'use strict';var /* istanbul ignore next */_immutable = require('immutable');
+
+var /* istanbul ignore next */_selectors = require('containers/App/selectors');
+
+describe('makeSelectLocationState', function () {
+  it('should select the route as a plain JS object', function () {
+    var route = /* istanbul ignore next */(0, _immutable.fromJS)({
+      locationBeforeTransitions: null });
+
+    var mockedState = /* istanbul ignore next */(0, _immutable.fromJS)({
+      route: route });
+
+    expect( /* istanbul ignore next */(0, _selectors.makeSelectLocationState)()(mockedState)).toEqual(route.toJS());
+  });
+
+  it('should return cached js routeState for same concurrent calls', function () {
+    var route = /* istanbul ignore next */(0, _immutable.fromJS)({
+      locationBeforeTransitions: null });
+
+    var mockedState = /* istanbul ignore next */(0, _immutable.fromJS)({
+      route: route });
+
+    var selectLocationState = /* istanbul ignore next */(0, _selectors.makeSelectLocationState)();
+
+    var firstRouteStateJS = selectLocationState(mockedState);
+    expect(selectLocationState(mockedState)).toBe(firstRouteStateJS);
+  });
+});

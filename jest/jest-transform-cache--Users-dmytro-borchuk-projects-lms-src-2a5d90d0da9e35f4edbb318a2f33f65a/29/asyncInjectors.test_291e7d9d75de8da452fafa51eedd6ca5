@@ -1,0 +1,173 @@
+/* istanbul ignore next */'use strict';
+
+
+
+var /* istanbul ignore next */_reactRouter = require('react-router');
+var /* istanbul ignore next */_effects = require('redux-saga/effects');
+var /* istanbul ignore next */_immutable = require('immutable');
+
+var /* istanbul ignore next */_store = require('store'); /* istanbul ignore next */var _store2 = _interopRequireDefault(_store);
+
+var /* istanbul ignore next */_asyncInjectors = require('../asyncInjectors'); /* istanbul ignore next */function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _marked = [
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+testSaga].map(regeneratorRuntime.mark); /**
+                                         * Test async injectors
+                                         */ // Fixtures
+var initialState = /* istanbul ignore next */(0, _immutable.fromJS)({ reduced: 'soon' });var reducer = function reducer() {/* istanbul ignore next */var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState; /* istanbul ignore next */var action = arguments[1];switch (action.type) {case 'TEST':return state.set('reduced', action.payload);default:return state;}};function testSaga() /* istanbul ignore next */{return regeneratorRuntime.wrap(function testSaga$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (/* istanbul ignore next */(0, _effects.put)({ type: 'TEST', payload: 'yup' }));case 2:case 'end':return _context.stop();}}}, _marked[0], this);}
+var sagas = [
+testSaga];
+
+
+describe('asyncInjectors', function () {
+  var store = /* istanbul ignore next */void 0;
+
+  describe('getAsyncInjectors', function () {
+    beforeAll(function () {
+      store = /* istanbul ignore next */(0, _store2.default)({}, /* istanbul ignore next */_reactRouter.memoryHistory);
+    });
+
+    it('given a store, should return all async injectors', function () {/* istanbul ignore next */var _getAsyncInjectors =
+      /* istanbul ignore next */(0, _asyncInjectors.getAsyncInjectors)(store),injectReducer = _getAsyncInjectors.injectReducer,injectSagas = _getAsyncInjectors.injectSagas;
+
+      injectReducer('test', reducer);
+      injectSagas(sagas);
+
+      var actual = store.getState().get('test');
+      var expected = initialState.merge({ reduced: 'yup' });
+
+      expect(actual.toJS()).toEqual(expected.toJS());
+    });
+
+    it('should throw if passed invalid store shape', function () {
+      var result = false;
+
+      Reflect.deleteProperty(store, 'dispatch');
+
+      try {
+        /* istanbul ignore next */(0, _asyncInjectors.getAsyncInjectors)(store);
+      } catch (err) {
+        result = err.name === 'Invariant Violation';
+      }
+
+      expect(result).toEqual(true);
+    });
+  });
+
+  describe('helpers', function () {
+    beforeAll(function () {
+      store = /* istanbul ignore next */(0, _store2.default)({}, /* istanbul ignore next */_reactRouter.memoryHistory);
+    });
+
+    describe('injectAsyncReducer', function () {
+      it('given a store, it should provide a function to inject a reducer', function () {
+        var injectReducer = /* istanbul ignore next */(0, _asyncInjectors.injectAsyncReducer)(store);
+
+        injectReducer('test', reducer);
+
+        var actual = store.getState().get('test');
+        var expected = initialState;
+
+        expect(actual.toJS()).toEqual(expected.toJS());
+      });
+
+      it('should not assign reducer if already existing', function () {
+        var injectReducer = /* istanbul ignore next */(0, _asyncInjectors.injectAsyncReducer)(store);
+
+        injectReducer('test', reducer);
+        injectReducer('test', function () {});
+
+        expect(store.asyncReducers.test.toString()).toEqual(reducer.toString());
+      });
+
+      it('should throw if passed invalid name', function () {
+        var result = false;
+
+        var injectReducer = /* istanbul ignore next */(0, _asyncInjectors.injectAsyncReducer)(store);
+
+        try {
+          injectReducer('', reducer);
+        } catch (err) {
+          result = err.name === 'Invariant Violation';
+        }
+
+        try {
+          injectReducer(999, reducer);
+        } catch (err) {
+          result = err.name === 'Invariant Violation';
+        }
+
+        expect(result).toEqual(true);
+      });
+
+      it('should throw if passed invalid reducer', function () {
+        var result = false;
+
+        var injectReducer = /* istanbul ignore next */(0, _asyncInjectors.injectAsyncReducer)(store);
+
+        try {
+          injectReducer('bad', 'nope');
+        } catch (err) {
+          result = err.name === 'Invariant Violation';
+        }
+
+        try {
+          injectReducer('coolio', 12345);
+        } catch (err) {
+          result = err.name === 'Invariant Violation';
+        }
+
+        expect(result).toEqual(true);
+      });
+    });
+
+    describe('injectAsyncSagas', function () {
+      it('given a store, it should provide a function to inject a saga', function () {
+        var injectSagas = /* istanbul ignore next */(0, _asyncInjectors.injectAsyncSagas)(store);
+
+        injectSagas(sagas);
+
+        var actual = store.getState().get('test');
+        var expected = initialState.merge({ reduced: 'yup' });
+
+        expect(actual.toJS()).toEqual(expected.toJS());
+      });
+
+      it('should throw if passed invalid saga', function () {
+        var result = false;
+
+        var injectSagas = /* istanbul ignore next */(0, _asyncInjectors.injectAsyncSagas)(store);
+
+        try {
+          injectSagas({ testSaga: testSaga });
+        } catch (err) {
+          result = err.name === 'Invariant Violation';
+        }
+
+        try {
+          injectSagas(testSaga);
+        } catch (err) {
+          result = err.name === 'Invariant Violation';
+        }
+
+        expect(result).toEqual(true);
+      });
+    });
+  });
+});
