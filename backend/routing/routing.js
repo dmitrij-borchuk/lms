@@ -1,7 +1,8 @@
 'use strict';
 
-module.exports = (server) => {
+module.exports = (server, DAL) => {
   const Promise = require('promise');
+  const users = require('./users.js');
 
   return new Promise( (resolve) => {
     server.route({
@@ -11,6 +12,8 @@ module.exports = (server) => {
         return reply('hello world');
       }
     });
+
+    users(server, DAL);
 
     resolve();
   });

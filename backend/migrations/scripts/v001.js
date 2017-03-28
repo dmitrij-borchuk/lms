@@ -3,8 +3,9 @@
 module.exports = function(DAL) {
   return {
     version: 1,
-    message: 'Created videos table',
+    message: 'Created "users" table',
     script: function () {
+      return DAL.users.createTable();
     }
   };
 };

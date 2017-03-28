@@ -1,19 +1,24 @@
 'use strict';
 
-const migrator = require('./migrator.js');
 
-module.exports = function (DAL, cb) {
+module.exports = function (DAL) {
+  const migrator = require('./migrator.js');
+
   const migrationOptions = {
     setDbVersion: setDbVersion,
     getDbVersion: getDbVersion,
     migrations: [
       require('./scripts/v001.js')(DAL),
-    ],
-    done: cb
+    ]
   };
 
-  DAL.settings.create().then(() => {
-    migrator(DAL, migrationOptions);
+  console.log('');
+  console.log('    Start migrations');
+  return DAL.settings.create().then(() => {
+    return migrator(DAL, migrationOptions);
+  }).then( () => {
+    console.log('    Finish migrations');
+    console.log('');
   });
 };
 
@@ -22,6 +27,7 @@ function setDbVersion(DAL, v) {
     name: 'version',
     value: v
   }).then( res => {
+    console.log(res);
     const v = res && res.version;
     return v;
   });
@@ -29,7 +35,6 @@ function setDbVersion(DAL, v) {
 
 function getDbVersion(DAL) {
   return DAL.settings.getByName('version').then( res => {
-    const v = res && res[0] && res[0].value;
-    return v || 0;
+    return res.value;
   });
 }
