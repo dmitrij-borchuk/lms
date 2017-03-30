@@ -13,7 +13,7 @@ module.exports = function (server, DAL) {
       handler: function (request, reply) {
         const user = request.payload;
 
-        DAL.users.getEmail(user.username).then((response) => {
+        DAL.users.getByEmail(user.username).then((response) => {
           console.log(response);
           reply();
         });

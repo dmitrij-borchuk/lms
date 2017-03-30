@@ -1,11 +1,30 @@
-// import { take, call, put, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import {
+  SUBMIT_LOGIN_FORM,
+  SUBMIT_LOGIN_FORM_SUCCESS,
+  SUBMIT_LOGIN_FORM_FAILURE,
+} from './constants';
+import api from '../../api';
 
-// Individual exports for testing
-export function* defaultSaga() {
-  // See example in containers/HomePage/sagas.js
+export function* authUser(action) {
+  console.log('authUser');
+  try {
+    const user = yield call(api.login, action.payload);
+    yield put({type: SUBMIT_LOGIN_FORM_SUCCESS, user: user});
+  } catch (e) {
+    yield put({
+      type: SUBMIT_LOGIN_FORM_FAILURE,
+      payload: {message: e.message},
+      error: true
+    });
+  }
+}
+
+function* mySaga() {
+  yield takeLatest(SUBMIT_LOGIN_FORM, authUser);
 }
 
 // All sagas to be loaded
 export default [
-  defaultSaga,
+  mySaga,
 ];

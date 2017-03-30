@@ -2,6 +2,7 @@
 
 module.exports = function(connection) {
   const Sequelize = require('sequelize');
+  const Promise = require('promise');
 
   let model = connection.define('user', {
     id: {
@@ -24,17 +25,24 @@ module.exports = function(connection) {
   return {
     model: model,
 
-    getEmail: (email) => {
+    getByEmail: (email) => {
       return model.findOne({
         where: {
           email: email
         }
       }).then( res => {
-        return res.get({
+        return !res ? null : res.get({
           plain: true
         });
       });
     },
+    create: (user) => {
+      model.create(user).then(function(user) {
+        return user.get({
+          plain: true
+        });
+      })
+    }
     // update: (setting) => {
     //   return model.findOne({
     //     where: {

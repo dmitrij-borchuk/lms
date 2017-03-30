@@ -1,18 +1,18 @@
 
 import {
-  defaultAction,
+  submitLoginForm,
 } from '../actions';
 import {
-  DEFAULT_ACTION,
+  SUBMIT_LOGIN_FORM,
 } from '../constants';
 
 describe('LoginPage actions', () => {
   describe('Default Action', () => {
-    it('has a type of DEFAULT_ACTION', () => {
+    it('has a type of SUBMIT_LOGIN_FORM', () => {
       const expected = {
-        type: DEFAULT_ACTION,
+        type: SUBMIT_LOGIN_FORM,
       };
-      expect(defaultAction()).toEqual(expected);
+      expect(submitLoginForm()).toEqual(expected);
     });
   });
 });

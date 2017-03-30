@@ -4,7 +4,7 @@
 *
 */
 
-import React from 'react';
+import React, { PropTypes } from 'react'
 import styled from 'styled-components';
 
 import { FormattedMessage } from 'react-intl';
@@ -12,6 +12,7 @@ import messages from './messages';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const Container = styled.div`
   margin: auto;
@@ -29,7 +30,32 @@ const Content = styled.div`
   padding: 20px;
 `;
 
-function AuthForm() {
+const ContentContainer = styled.div`
+  position: relative;
+`;
+
+const ProgressContainer = styled.div`
+  background-color: rgba(0,0,0,0.1);
+  position: absolute;
+  height: 100%;
+  padding-top: 75px;
+  text-align: center;
+  z-index: 2;
+  width: 100%;
+`;
+
+function AuthForm(props) {
+  let username = '';
+  let password = '';
+
+  function usernameChanged(e, value) {
+    username = value;
+  }
+
+  function passwordChanged(e, value) {
+    password = value;
+  }
+
   return (
     <Container>
       <Paper zDepth={3} >
@@ -38,28 +64,41 @@ function AuthForm() {
             <FormattedMessage {...messages.header} />
           </Header>
         </Paper>
-        <Content>
-          <TextField
-            floatingLabelText="Username"
-            fullWidth={true}
-          />
-          <TextField
-            floatingLabelText="Password"
-            fullWidth={true}
-          />
-          <RaisedButton
-            primary={true}
-            label="Submit"
-            fullWidth={true}
-          />
-        </Content>
+        <ContentContainer>
+          {props.isFetching &&
+            <ProgressContainer>
+              <CircularProgress />
+            </ProgressContainer>
+          }
+          <Content>
+            <TextField
+              floatingLabelText="Username"
+              fullWidth={true}
+              onChange={usernameChanged}
+              errorText={props.isError ? messages.error.defaultMessage : ''}
+            />
+            <TextField
+              floatingLabelText="Password"
+              fullWidth={true}
+              onChange={passwordChanged}
+            />
+            <RaisedButton
+              primary={true}
+              label="Submit"
+              fullWidth={true}
+              onClick={ () => {props.onSubmit({username, password})} }
+            />
+          </Content>
+        </ContentContainer>
       </Paper>
     </Container>
   );
 }
 
 AuthForm.propTypes = {
-
+  onSubmit: PropTypes.func.isRequired,
+  isFetching: React.PropTypes.bool,
+  isError: React.PropTypes.bool,
 };
 
 export default AuthForm;

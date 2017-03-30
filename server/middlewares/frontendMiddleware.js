@@ -40,6 +40,16 @@ const addDevMiddlewares = (app, webpackConfig) => {
       }
     });
   });
+
+  var proxy = require('express-http-proxy');
+ 
+  // var app = require('express')();
+   
+  app.use('/api', proxy('http://localhost:8080', {
+    forwardPath: function(req) {
+      return '/api' + require('url').parse(req.url).path;
+    }
+  }));
 };
 
 // Production middlewares

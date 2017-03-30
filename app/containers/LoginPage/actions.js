@@ -5,11 +5,13 @@
  */
 
 import {
-  DEFAULT_ACTION,
+  SUBMIT_LOGIN_FORM,
 } from './constants';
 
-export function defaultAction() {
+export function submitLoginForm(credentials) {
+  console.log(credentials);
   return {
-    type: DEFAULT_ACTION,
+    type: SUBMIT_LOGIN_FORM,
+    payload: credentials
   };
 }
