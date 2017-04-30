@@ -24,7 +24,16 @@ var config = {
   mailGun: {
     apiKey: '',
     domain: ''
-  }
+  },
+  defaultAdmin: {
+    email: null
+  },
+  email: {
+    noReplyAdress: 'no-reply@multicora.com',
+    defaultFrom: 'no-reply@multicora.com',
+    defaultSubject: 'LMS'
+  },
+  defaultDomain: null
 };
 
 module.exports = merge(config, userConfig);

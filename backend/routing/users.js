@@ -6,6 +6,17 @@ const Boom = require('boom');
 module.exports = function (server, DAL) {
   // const usersController = require('../controllers/users.js')(DAL);
 
+  /**
+   * @api {post} /api/login Login user
+   *
+   * @apiParam {Object}   credentials                  user credentials
+   * @apiParam {String}   credentials.email            user email
+   * @apiParam {String}   credentials.password         user password
+   *
+   * @apiName Login
+   * @apiGroup Users
+   *
+   */
   server.route({
     method: 'POST',
     path: '/api/login',
@@ -33,6 +44,52 @@ module.exports = function (server, DAL) {
         // }, () => {
         //   reply(Boom.unauthorized('The username or password is incorrect'));
         // });
+      }
+    }
+  });
+
+  /**
+   * @api {post} /api/set-password Set new password for user
+   *
+   * @apiParam {String}   token            token for reseting
+   * @apiParam {String}   password         user password
+   *
+   * @apiName ResetPassword
+   * @apiGroup Users
+   *
+   */
+  server.route({
+    method: 'POST',
+    path: '/api/set-password',
+    config: {
+      handler: function (request, reply) {
+        const usersCtrl = require('../controllers/userCtrl.js');
+
+        const token = request.payload.token;
+        const password = request.payload.password;
+
+      }
+    }
+  });
+
+  /**
+   * @api {post} /api/reset-assword Reset password for user
+   *
+   * @apiParam {String}   email            user email
+   *
+   * @apiName ResetPassword
+   * @apiGroup Users
+   *
+   */
+  server.route({
+    method: 'POST',
+    path: '/api/reset-password',
+    config: {
+      handler: function (request, reply) {
+        const usersCtrl = require('../controllers/userCtrl.js');
+
+        const email = request.payload.email;
+
       }
     }
   });

@@ -17,8 +17,10 @@ module.exports = function(connection) {
       unique: true
     },
     password: {
-      type: Sequelize.STRING,
-      allowNull: true
+      type: Sequelize.STRING
+    },
+    reset_token: {
+      type: Sequelize.STRING
     }
   });
 
@@ -37,12 +39,43 @@ module.exports = function(connection) {
       });
     },
     create: (user) => {
-      model.create(user).then(function(user) {
+      return model.create(user).then(function(user) {
         return user.get({
           plain: true
         });
       })
-    }
+    },
+    addResetToken: (resetToken, email) => {
+      return model.findOne({
+        where: {
+          email: email
+        }
+      }).then( instance => {
+        if (!instance) {
+          return Promise.reject('User not found');
+        } else {
+          instance.resetToken = resetToken;
+        }
+
+        return instance.save();
+      });
+    },
+    newPassword: (resetToken, password) => {
+      return model.findOne({
+        where: {
+          resetToken: resetToken
+        }
+      }).then( instance => {
+        if (!instance) {
+          return Promise.reject('Wrong token');
+        } else {
+          instance.resetToken = null;
+          instance.password = password;
+        }
+
+        return instance.save();
+      });
+    },
     // update: (setting) => {
     //   return model.findOne({
     //     where: {
@@ -75,6 +108,14 @@ module.exports = function(connection) {
           ' updatedAt DATETIME,',
           ' createdAt DATETIME',
         ')'
+      ].join('');
+
+      return connection.query(queryString);
+    },
+    addColumnResetToken: function () {
+      const queryString = [
+        'ALTER TABLE `users` ',
+        'ADD `reset_token` VARCHAR(255);'
       ].join('');
 
       return connection.query(queryString);

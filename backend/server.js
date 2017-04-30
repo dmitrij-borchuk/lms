@@ -32,6 +32,26 @@ module.exports = () => {
       }
       console.log('Server running at:', server.info.uri);
     });
+
+    // // const config = require('../../config.js');
+    // // const mailer = require('../../services/mailer.js')(config);
+    // const templates = require('./services/templates.js')();
+
+    // let user;
+
+    // // return DAL.users.create(config.defaultAdmin).then( (newUser) => {
+    //   user = {email: 'frunk.lern@gmail.com'};
+    // templates.setPassword(user, config.defaultDomain + '/setPassword').then( (template) => {
+    //   console.log(template);
+    //   // return mailer.send({
+    //   //   to: user.email,
+    //   //   subject: 'You would be the first admin of LMS',
+    //   //   text: template.text,
+    //   //   html: template.html
+    //   // });
+    // }).catch( (err) => {
+    //   console.error(err);
+    // });
   }).catch( (err) => {
     console.log(err);
   });
