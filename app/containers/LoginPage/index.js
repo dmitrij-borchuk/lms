@@ -41,18 +41,10 @@ const mapStateToProps = makeSelectLoginPage();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit(credentials) {
-      // console.log(this);
       dispatch( submitLoginForm(credentials) )
     },
     dispatch
   };
 }
-
-// export function mapDispatchToProps(dispatch) {
-//   return {
-//     onLocaleToggle: (evt) => dispatch(changeLocale(evt.target.value)),
-//     dispatch,
-//   };
-// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

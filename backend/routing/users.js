@@ -1,9 +1,9 @@
 'use strict';
 
-const Boom = require('boom');
-// const utils = require('../utils.js');
-
 module.exports = function (server, DAL) {
+  const Boom = require('boom');
+  const Joi = require('joi');
+  // const utils = require('../utils.js');
   // const usersController = require('../controllers/users.js')(DAL);
 
   /**
@@ -26,7 +26,11 @@ module.exports = function (server, DAL) {
 
         DAL.users.getByEmail(user.username).then((response) => {
           console.log(response);
-          reply();
+          if (!response) {
+            reply(Boom.unauthorized( 'THE_USERNAME_OR_PASSWORD_IS_INCORRECT' ));
+          } else {
+            reply();
+          }
         });
 
         // DAL.users.getUserByEmail(user.login).then((response) => {
@@ -48,29 +52,29 @@ module.exports = function (server, DAL) {
     }
   });
 
-  /**
-   * @api {post} /api/set-password Set new password for user
-   *
-   * @apiParam {String}   token            token for reseting
-   * @apiParam {String}   password         user password
-   *
-   * @apiName ResetPassword
-   * @apiGroup Users
-   *
-   */
-  server.route({
-    method: 'POST',
-    path: '/api/set-password',
-    config: {
-      handler: function (request, reply) {
-        const usersCtrl = require('../controllers/userCtrl.js');
+  // /**
+  //  * @api {post} /api/set-password Set new password for user
+  //  *
+  //  * @apiParam {String}   token            token for reseting
+  //  * @apiParam {String}   password         user password
+  //  *
+  //  * @apiName ResetPassword
+  //  * @apiGroup Users
+  //  *
+  //  */
+  // server.route({
+  //   method: 'POST',
+  //   path: '/api/set-password',
+  //   config: {
+  //     handler: function (request, reply) {
+  //       const usersCtrl = require('../controllers/userCtrl.js');
 
-        const token = request.payload.token;
-        const password = request.payload.password;
+  //       const token = request.payload.token;
+  //       const password = request.payload.password;
 
-      }
-    }
-  });
+  //     }
+  //   }
+  // });
 
   /**
    * @api {post} /api/reset-assword Reset password for user
@@ -92,5 +96,32 @@ module.exports = function (server, DAL) {
 
       }
     }
+  });
+
+  server.route({
+    method: 'POST',
+    path: '/api/set-password',
+    config: {
+      description: 'Set new password for user',
+      notes: 'Set new password for user',
+      tags: ['api'],
+      validate: {
+        payload: {
+          password: Joi.string().required(),
+          token: Joi.string().required()
+        }
+      },
+      handler: (request, reply) => {
+        const usersCtrl = require('../controllers/userCtrl.js')(DAL);
+
+        const password = request.payload.password;
+        const token = request.payload.token;
+        usersCtrl.setPassword(token, password).then( () => {
+          reply();
+        }).catch( err => {
+          reply( Boom.badRequest(err, err) );
+        });
+      }
+    },
   });
 };

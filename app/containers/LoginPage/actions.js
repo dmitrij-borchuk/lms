@@ -9,7 +9,6 @@ import {
 } from './constants';
 
 export function submitLoginForm(credentials) {
-  console.log(credentials);
   return {
     type: SUBMIT_LOGIN_FORM,
     payload: credentials

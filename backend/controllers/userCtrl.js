@@ -1,6 +1,5 @@
 'use strict';
 
-// const passwordHash = require('password-hash');
 // const Promise = require('promise');
 // const mailer = require('../services/mailer.js');
 // const config = require('../config.js');
@@ -34,6 +33,13 @@ module.exports = function (DAL) {
           html: template.html
         });
       });
+    },
+
+    setPassword: (token, password) => {
+      const passwordHash = require('password-hash');
+      const encodedPassword = passwordHash.generate(password);
+
+      return DAL.users.newPassword(token, encodedPassword);
     },
 
     // isUserExist: (email) => {

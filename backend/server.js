@@ -9,6 +9,7 @@ module.exports = () => {
   const migrations = require('./migrations/migrations.js');
   const dal = require('./dal/dal.js');
   const database = require('./database.js');
+  const docs = require('./docs.js');
 
   // Create a server with a host and port
   const server = new Hapi.Server();
@@ -24,6 +25,8 @@ module.exports = () => {
       migrations(DAL),
       routing(server, DAL)
     ]);
+  }).then( () => {
+    return docs(server);
   }).then( () => {
     // Start the server
     server.start((err) => {
@@ -53,6 +56,6 @@ module.exports = () => {
     //   console.error(err);
     // });
   }).catch( (err) => {
-    console.log(err);
+    console.error(err);
   });
 };

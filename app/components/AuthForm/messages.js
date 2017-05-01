@@ -12,6 +12,6 @@ export default defineMessages({
   },
   error: {
     id: 'app.components.AuthForm.error',
-    defaultMessage: 'User or password is incorrect',
+    defaultMessage: 'The username or password is incorrect',
   },
 });

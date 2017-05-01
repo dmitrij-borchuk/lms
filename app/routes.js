@@ -54,6 +54,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/setPassword/:token',
+      name: 'setPasswordPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/SetPasswordPage/reducer'),
+          import('containers/SetPasswordPage/sagas'),
+          import('containers/SetPasswordPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('setPasswordPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

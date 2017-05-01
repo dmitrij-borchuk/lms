@@ -33,16 +33,12 @@ module.exports = function(connection) {
           email: email
         }
       }).then( res => {
-        return !res ? null : res.get({
-          plain: true
-        });
+        return !res ? null : processInstance(res);
       });
     },
     create: (user) => {
       return model.create(user).then(function(user) {
-        return user.get({
-          plain: true
-        });
+        return processInstance(user);
       })
     },
     addResetToken: (resetToken, email) => {
@@ -54,7 +50,7 @@ module.exports = function(connection) {
         if (!instance) {
           return Promise.reject('User not found');
         } else {
-          instance.resetToken = resetToken;
+          instance.reset_token = resetToken;
         }
 
         return instance.save();
@@ -63,13 +59,13 @@ module.exports = function(connection) {
     newPassword: (resetToken, password) => {
       return model.findOne({
         where: {
-          resetToken: resetToken
+          reset_token: resetToken
         }
       }).then( instance => {
         if (!instance) {
           return Promise.reject('Wrong token');
         } else {
-          instance.resetToken = null;
+          instance.reset_token = null;
           instance.password = password;
         }
 
@@ -121,4 +117,10 @@ module.exports = function(connection) {
       return connection.query(queryString);
     }
   };
+
+  function processInstance(instance) {
+    return instance.get({
+      plain: true
+    });
+  }
 };

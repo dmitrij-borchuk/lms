@@ -7,7 +7,6 @@ import {
 import api from '../../api';
 
 export function* authUser(action) {
-  console.log('authUser');
   try {
     const user = yield call(api.login, action.payload);
     yield put({type: SUBMIT_LOGIN_FORM_SUCCESS, user: user});
