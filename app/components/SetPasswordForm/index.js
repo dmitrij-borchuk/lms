@@ -5,15 +5,15 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+
+import messages from './messages';
 
 const Container = styled.div`
   margin: auto;
@@ -70,15 +70,15 @@ function SetPasswordForm(props) {
             <TextField
               type="password"
               floatingLabelText="Password"
-              fullWidth={true}
+              fullWidth
               onChange={passwordChanged}
               errorText={props.isError ? messages.error.defaultMessage : ''}
             />
             <RaisedButton
-              primary={true}
+              primary
               label="Submit"
-              fullWidth={true}
-              onClick={ () => {props.onSubmit(password, props.token)} }
+              fullWidth
+              onClick={() => { props.onSubmit(password, props.token); }}
             />
           </Content>
         </ContentContainer>
@@ -88,7 +88,11 @@ function SetPasswordForm(props) {
 }
 
 SetPasswordForm.propTypes = {
-
+  password: PropTypes.string,
+  token: PropTypes.string,
+  isFetching: PropTypes.bool,
+  isError: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default SetPasswordForm;

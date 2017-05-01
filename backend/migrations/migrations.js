@@ -1,41 +1,40 @@
-'use strict';
+import migrator from './migrator';
+import mf1 from './scripts/v001';
+import mf2 from './scripts/v002';
+import mf3 from './scripts/v003';
 
+const migrationsFactories = [
+  mf1,
+  mf2,
+  mf3,
+];
 
-module.exports = function (DAL) {
-  const migrator = require('./migrator.js');
+export default function (DAL) {
+  const migrations = migrationsFactories.map(((m) => m(DAL)));
 
   const migrationOptions = {
-    setDbVersion: setDbVersion,
-    getDbVersion: getDbVersion,
-    migrations: [
-      require('./scripts/v001.js')(DAL),
-      require('./scripts/v002.js')(DAL),
-      require('./scripts/v003.js')(DAL),
-    ]
+    setDbVersion,
+    getDbVersion,
+    migrations,
   };
 
   console.log('');
   console.log('    Start migrations');
-  return DAL.settings.create().then(() => {
-    return migrator(DAL, migrationOptions);
-  }).then( () => {
+  return DAL.settings.create().then(
+    () => migrator(DAL, migrationOptions)
+  ).then(() => {
     console.log('    Finish migrations');
     console.log('');
   });
-};
+}
 
 function setDbVersion(DAL, v) {
   return DAL.settings.update({
     name: 'version',
-    value: v
-  }).then( res => {
-    const v = res && res.version;
-    return v;
-  });
+    value: v,
+  }).then((res) => res && res.version);
 }
 
 function getDbVersion(DAL) {
-  return DAL.settings.getByName('version').then( res => {
-    return res.value;
-  });
+  return DAL.settings.getByName('version').then((res) => res.value);
 }

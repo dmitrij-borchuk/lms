@@ -1,12 +1,14 @@
-'use strict';
-
 // const Promise = require('promise');
-// const mailer = require('../services/mailer.js');
-// const config = require('../config.js');
-const utils = require('../utils.js');
-// const template = require('../services/mailTemplate.js');
+import passwordHash from 'password-hash';
+import utils from '../utils';
+import config from '../config';
+import mailerFactory from '../services/mailer';
+import templatesFactory from '../services/templates';
 
-module.exports = function (DAL) {
+const mailer = mailerFactory(config);
+const templates = templatesFactory();
+
+export default function (DAL) {
   return {
     // verifyPassword: (user, passwordForVerify) => {
     //   if (!!user.password && passwordHash.verify(user.password, passwordForVerify)) {
@@ -17,26 +19,22 @@ module.exports = function (DAL) {
     // },
 
     resetPassword: (email, serverUrl) => {
-      const config = require('../../config.js');
-      const mailer = require('../../services/mailer.js')(config);
-      const templates = require('../../services/templates.js')();
-
       const resetToken = utils.newToken();
 
-      return DAL.users.addResetToken(resetToken, email).then(() => {
-        return templates.setPassword(serverUrl + '/setPassword' + resetToken);
-      }).then( (template) => {
-        return mailer.send({
-          to: email,
-          subject: 'Set your password',
-          text: template.text,
-          html: template.html
-        });
-      });
+      return DAL.users.addResetToken(
+        resetToken,
+        email
+      ).then(() => templates.setPassword(
+        `${serverUrl}/setPassword/${resetToken}`
+      )).then((template) => mailer.send({
+        to: email,
+        subject: 'Set your password',
+        text: template.text,
+        html: template.html,
+      }));
     },
 
     setPassword: (token, password) => {
-      const passwordHash = require('password-hash');
       const encodedPassword = passwordHash.generate(password);
 
       return DAL.users.newPassword(token, encodedPassword);
@@ -179,4 +177,4 @@ module.exports = function (DAL) {
     //   };
     // }
   };
-};
+}

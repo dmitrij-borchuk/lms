@@ -7,11 +7,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import makeSelectSetPasswordPage from './selectors';
-import messages from './messages';
 import { submitSetPasswordForm } from './actions';
-import SetPasswordForm from '../../components/SetPasswordForm'
+import SetPasswordForm from '../../components/SetPasswordForm';
 
 export class SetPasswordPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -36,7 +34,13 @@ export class SetPasswordPage extends React.PureComponent { // eslint-disable-lin
 }
 
 SetPasswordPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
+  error: PropTypes.bool,
+  password: PropTypes.string,
+  params: {
+    token: PropTypes.string,
+  },
 };
 
 const mapStateToProps = makeSelectSetPasswordPage();
@@ -44,7 +48,7 @@ const mapStateToProps = makeSelectSetPasswordPage();
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit(password, token) {
-      dispatch( submitSetPasswordForm(password, token) )
+      dispatch(submitSetPasswordForm(password, token));
     },
     dispatch,
   };

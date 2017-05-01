@@ -1,32 +1,28 @@
-'use strict';
+import Promise from 'promise';
+import Inert from 'inert';
+import Vision from 'vision';
+import HapiSwagger from 'hapi-swagger';
+import Pack from './package.json';
 
-module.exports = (server) => {
-  const Promise = require('promise');
-  const Inert = require('inert');
-  const Vision = require('vision');
-  const HapiSwagger = require('hapi-swagger');
-  const Pack = require('./package');
-
+export default function (server) {
   const options = {
     info: {
-      'title': 'API Documentation',
-      'version': Pack.version,
-    }
+      title: 'API Documentation',
+      version: Pack.version,
+    },
   };
 
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     server.register(
       [
         Inert,
         Vision,
         {
-          'register': HapiSwagger,
-          'options': options
-        }
+          register: HapiSwagger,
+          options,
+        },
       ],
-      (err) => {
-        err ? reject(err) : resolve();
-      }
+      (err) => err ? reject(err) : resolve()
     );
   });
 }

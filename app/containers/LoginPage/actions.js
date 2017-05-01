@@ -11,6 +11,6 @@ import {
 export function submitLoginForm(credentials) {
   return {
     type: SUBMIT_LOGIN_FORM,
-    payload: credentials
+    payload: credentials,
   };
 }

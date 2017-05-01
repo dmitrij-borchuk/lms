@@ -9,12 +9,12 @@ import api from '../../api';
 export function* authUser(action) {
   try {
     const user = yield call(api.login, action.payload);
-    yield put({type: SUBMIT_LOGIN_FORM_SUCCESS, user: user});
+    yield put({ type: SUBMIT_LOGIN_FORM_SUCCESS, user });
   } catch (e) {
     yield put({
       type: SUBMIT_LOGIN_FORM_FAILURE,
-      payload: {message: e.message},
-      error: true
+      payload: { message: e.message },
+      error: true,
     });
   }
 }

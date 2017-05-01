@@ -15,7 +15,7 @@ const initialState = fromJS({
   isFetching: false,
   error: false,
   message: null,
-  password: null
+  password: null,
 });
 
 function setPasswordPageReducer(state = initialState, action) {
@@ -24,18 +24,18 @@ function setPasswordPageReducer(state = initialState, action) {
       return state.merge({
         isFetching: true,
         error: false,
-        password: action.payload.password
+        password: action.payload.password,
       });
     case SUBMIT_SET_PASSWORD_FORM_SUCCESS:
       return state.merge({
         isFetching: false,
-        error: false
+        error: false,
       });
     case SUBMIT_SET_PASSWORD_FORM_FAILURE:
       return state.merge({
         isFetching: false,
         error: true,
-        message: action.payload.message
+        message: action.payload.message,
       });
     default:
       return state;

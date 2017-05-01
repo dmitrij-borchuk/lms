@@ -1,33 +1,29 @@
-'use strict';
+import Promise from 'promise';
+import Hapi from 'hapi';
 
-module.exports = () => {
-  const Hapi = require('hapi');
-  const Promise = require('promise');
+import migrations from './migrations/migrations';
+import database from './database';
+import routing from './routing/routing';
+import config from './config';
+import docs from './docs';
+import dal from './dal/dal';
 
-  const config = require('./config.js');
-  const routing = require('./routing/routing.js');
-  const migrations = require('./migrations/migrations.js');
-  const dal = require('./dal/dal.js');
-  const database = require('./database.js');
-  const docs = require('./docs.js');
-
+export default function () {
   // Create a server with a host and port
   const server = new Hapi.Server();
   server.connection({
     host: 'localhost',
-    port: config.server.port
+    port: config.server.port,
   });
 
-  database().then( connection => {
-    return dal(connection);
-  }).then( DAL => {
-    return Promise.all([
-      migrations(DAL),
-      routing(server, DAL)
-    ]);
-  }).then( () => {
-    return docs(server);
-  }).then( () => {
+  database().then(
+    (connection) => dal(connection)
+  ).then((DAL) => Promise.all([
+    migrations(DAL),
+    routing(server, DAL),
+  ])).then(
+    () => docs(server)
+  ).then(() => {
     // Start the server
     server.start((err) => {
       if (err) {
@@ -55,7 +51,7 @@ module.exports = () => {
     // }).catch( (err) => {
     //   console.error(err);
     // });
-  }).catch( (err) => {
-    console.error(err);
-  });
-};
+  }).catch(
+    (err) => console.error(err)
+  );
+}

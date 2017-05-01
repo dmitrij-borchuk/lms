@@ -1,8 +1,10 @@
-'use strict';
+import Boom from 'boom';
+import Joi from 'joi';
 
-module.exports = function (server, DAL) {
-  const Boom = require('boom');
-  const Joi = require('joi');
+import usersCtrlFactory from '../controllers/userCtrl';
+
+export default function (server, DAL) {
+  const usersCtrl = usersCtrlFactory(DAL);
   // const utils = require('../utils.js');
   // const usersController = require('../controllers/users.js')(DAL);
 
@@ -21,13 +23,12 @@ module.exports = function (server, DAL) {
     method: 'POST',
     path: '/api/login',
     config: {
-      handler: function (request, reply) {
+      handler(request, reply) {
         const user = request.payload;
 
         DAL.users.getByEmail(user.username).then((response) => {
-          console.log(response);
           if (!response) {
-            reply(Boom.unauthorized( 'THE_USERNAME_OR_PASSWORD_IS_INCORRECT' ));
+            reply(Boom.unauthorized('THE_USERNAME_OR_PASSWORD_IS_INCORRECT'));
           } else {
             reply();
           }
@@ -48,8 +49,8 @@ module.exports = function (server, DAL) {
         // }, () => {
         //   reply(Boom.unauthorized('The username or password is incorrect'));
         // });
-      }
-    }
+      },
+    },
   });
 
   // /**
@@ -89,13 +90,13 @@ module.exports = function (server, DAL) {
     method: 'POST',
     path: '/api/reset-password',
     config: {
-      handler: function (request, reply) {
-        const usersCtrl = require('../controllers/userCtrl.js');
+      handler(request, reply) {
+        // const usersCtrl = require('../controllers/userCtrl.js');
 
-        const email = request.payload.email;
-
-      }
-    }
+        // const email = request.payload.email;
+        reply();
+      },
+    },
   });
 
   server.route({
@@ -108,20 +109,18 @@ module.exports = function (server, DAL) {
       validate: {
         payload: {
           password: Joi.string().required(),
-          token: Joi.string().required()
-        }
+          token: Joi.string().required(),
+        },
       },
       handler: (request, reply) => {
-        const usersCtrl = require('../controllers/userCtrl.js')(DAL);
-
         const password = request.payload.password;
         const token = request.payload.token;
-        usersCtrl.setPassword(token, password).then( () => {
-          reply();
-        }).catch( err => {
-          reply( Boom.badRequest(err, err) );
-        });
-      }
+        usersCtrl.setPassword(token, password).then(
+          () => reply()
+        ).catch(
+          (err) => reply(Boom.badRequest(err, err))
+        );
+      },
     },
   });
-};
+}

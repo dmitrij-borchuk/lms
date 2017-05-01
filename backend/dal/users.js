@@ -1,75 +1,77 @@
-'use strict';
+import Sequelize from 'sequelize';
+import Promise from 'promise';
 
-module.exports = function(connection) {
-  const Sequelize = require('sequelize');
-  const Promise = require('promise');
-
-  let model = connection.define('user', {
+export default function (connection) {
+  const model = connection.define('user', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true
+      autoIncrement: true,
     },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
     password: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     reset_token: {
-      type: Sequelize.STRING
-    }
+      type: Sequelize.STRING,
+    },
   });
 
   return {
-    model: model,
+    model,
 
-    getByEmail: (email) => {
+    getByEmail(email) {
       return model.findOne({
         where: {
-          email: email
-        }
-      }).then( res => {
-        return !res ? null : processInstance(res);
-      });
+          email,
+        },
+      }).then((res) => !res ? null : processInstance(res));
     },
-    create: (user) => {
-      return model.create(user).then(function(user) {
-        return processInstance(user);
-      })
+    create(data) {
+      return model.create(data).then((user) => processInstance(user));
     },
-    addResetToken: (resetToken, email) => {
+    addResetToken(resetToken, email) {
       return model.findOne({
         where: {
-          email: email
-        }
-      }).then( instance => {
+          email,
+        },
+      }).then((res) => {
+        const instance = res;
+        let promise;
+
         if (!instance) {
-          return Promise.reject('User not found');
+          promise = Promise.reject('User not found');
         } else {
           instance.reset_token = resetToken;
+          promise = instance.save();
         }
 
-        return instance.save();
+        return promise;
       });
     },
-    newPassword: (resetToken, password) => {
+    newPassword(resetToken, password) {
       return model.findOne({
         where: {
-          reset_token: resetToken
-        }
-      }).then( instance => {
+          reset_token: resetToken,
+        },
+      }).then((res) => {
+        const instance = res;
+        let promise;
+
         if (!instance) {
-          return Promise.reject('Wrong token');
+          promise = Promise.reject('Wrong token');
         } else {
           instance.reset_token = null;
           instance.password = password;
+          promise = instance.save();
         }
 
-        return instance.save();
+        return promise;
       });
     },
     // update: (setting) => {
@@ -94,33 +96,31 @@ module.exports = function(connection) {
 
     // Migration
     createTable: () => {
-      let queryString = [
-        'CREATE TABLE',
-        ' users',
-        ' (',
-          ' id int(255) NOT NULL AUTO_INCREMENT primary KEY UNIQUE,',
-          ' email varchar(255) NOT NULL UNIQUE,',
-          ' password varchar(255),',
-          ' updatedAt DATETIME,',
-          ' createdAt DATETIME',
-        ')'
+      const queryString = [
+        'CREATE TABLE users (',
+        'id int(255) NOT NULL AUTO_INCREMENT primary KEY UNIQUE,',
+        'email varchar(255) NOT NULL UNIQUE,',
+        'password varchar(255),',
+        'updatedAt DATETIME,',
+        'createdAt DATETIME',
+        ')',
       ].join('');
 
       return connection.query(queryString);
     },
-    addColumnResetToken: function () {
+    addColumnResetToken() {
       const queryString = [
         'ALTER TABLE `users` ',
-        'ADD `reset_token` VARCHAR(255);'
+        'ADD `reset_token` VARCHAR(255);',
       ].join('');
 
       return connection.query(queryString);
-    }
+    },
   };
 
   function processInstance(instance) {
     return instance.get({
-      plain: true
+      plain: true,
     });
   }
-};
+}
