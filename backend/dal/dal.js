@@ -1,17 +1,17 @@
-'use strict';
+import Promise from 'promise';
+import settingsFactory from './settings';
+import usersFactory from './users';
 
-module.exports = function(connection){
-  const Promise = require('promise');
-
-  return new Promise(function (resolve) {
-    let DAL = {};
+export default function (connection) {
+  return new Promise((resolve) => {
+    const DAL = {};
 
     // Settings
-    DAL.settings = require('./settings.js')(connection, DAL);
+    DAL.settings = settingsFactory(connection, DAL);
 
     // Users
-    DAL.users = require('./users.js')(connection, DAL);
+    DAL.users = usersFactory(connection, DAL);
 
     resolve(DAL);
   });
-};
+}

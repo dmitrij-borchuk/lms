@@ -1,20 +1,18 @@
-'use strict';
+import Promise from 'promise';
+import users from './users';
 
-module.exports = (server, DAL) => {
-  const Promise = require('promise');
-  const users = require('./users.js');
-
-  return new Promise( (resolve) => {
+export default function (server, DAL) {
+  return new Promise((resolve) => {
     server.route({
       method: 'GET',
-      path:'/hello', 
-      handler: function (request, reply) {
+      path: '/hello',
+      handler(request, reply) {
         return reply('hello world');
-      }
+      },
     });
 
     users(server, DAL);
 
     resolve();
   });
-};
+}

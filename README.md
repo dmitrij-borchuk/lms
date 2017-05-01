@@ -10,7 +10,7 @@ boilerplate doc: https://github.com/dmitrij-borchuk/lms/tree/develop/docs
 ## Development
 
 ### Server
-nodemon backend
+npm start
 
 ### Frontend
 npm run start
