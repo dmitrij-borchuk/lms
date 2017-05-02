@@ -4,15 +4,15 @@
 *
 */
 
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+
+import messages from './messages';
 
 const Container = styled.div`
   margin: auto;
@@ -45,8 +45,8 @@ const ProgressContainer = styled.div`
 `;
 
 function AuthForm(props) {
-  let username = '';
-  let password = '';
+  let username = props.username || '';
+  let password = props.password || '';
 
   function usernameChanged(e, value) {
     username = value;
@@ -54,6 +54,15 @@ function AuthForm(props) {
 
   function passwordChanged(e, value) {
     password = value;
+  }
+
+  function getErrorText(error) {
+    const errorMessages = {
+      500: messages.serverError.defaultMessage,
+      400: messages.incorrectCredentials.defaultMessage,
+    };
+
+    return error ? errorMessages[error.status] : '';
   }
 
   return (
@@ -72,21 +81,22 @@ function AuthForm(props) {
           }
           <Content>
             <TextField
-              floatingLabelText="Username"
-              fullWidth={true}
+              floatingLabelText="Email"
+              fullWidth
               onChange={usernameChanged}
-              errorText={props.isError ? messages.error.defaultMessage : ''}
+              errorText={getErrorText(props.error)}
             />
             <TextField
+              type="password"
               floatingLabelText="Password"
-              fullWidth={true}
+              fullWidth
               onChange={passwordChanged}
             />
             <RaisedButton
-              primary={true}
+              primary
               label="Submit"
-              fullWidth={true}
-              onClick={ () => {props.onSubmit({username, password})} }
+              fullWidth
+              onClick={() => { props.onSubmit({ username, password }); }}
             />
           </Content>
         </ContentContainer>
@@ -98,7 +108,9 @@ function AuthForm(props) {
 AuthForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: React.PropTypes.bool,
-  isError: React.PropTypes.bool,
+  error: React.PropTypes.object,
+  username: React.PropTypes.string,
+  password: React.PropTypes.string,
 };
 
 export default AuthForm;

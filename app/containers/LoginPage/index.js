@@ -17,7 +17,9 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
         <AuthForm
           onSubmit={this.props.onSubmit}
           isFetching={this.props.isFetching}
-          isError={this.props.error}
+          error={this.props.error}
+          username={this.props.username}
+          password={this.props.password}
         />
       </div>
     );
@@ -27,7 +29,9 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
 LoginPage.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.object,
+  username: React.PropTypes.string,
+  password: React.PropTypes.string,
 };
 
 const mapStateToProps = makeSelectLoginPage();

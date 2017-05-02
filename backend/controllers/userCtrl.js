@@ -1,5 +1,5 @@
-// const Promise = require('promise');
 import passwordHash from 'password-hash';
+import Promise from 'promise';
 import utils from '../utils';
 import config from '../config';
 import mailerFactory from '../services/mailer';
@@ -10,14 +10,6 @@ const templates = templatesFactory();
 
 export default function (DAL) {
   return {
-    // verifyPassword: (user, passwordForVerify) => {
-    //   if (!!user.password && passwordHash.verify(user.password, passwordForVerify)) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
-
     resetPassword: (email, serverUrl) => {
       const resetToken = utils.newToken();
 
@@ -38,6 +30,34 @@ export default function (DAL) {
       const encodedPassword = passwordHash.generate(password);
 
       return DAL.users.newPassword(token, encodedPassword);
+    },
+
+    login(credentials) {
+      return DAL.users.getPassword(credentials.username).then((password) => {
+        const passwordsMatched = password && verifyPassword(
+          credentials.password,
+          password
+        );
+        let result;
+
+        if (passwordsMatched) {
+          const token = utils.newToken();
+          let user;
+          // TODO: need to chack expired tokens
+          result = DAL.users.getByEmail(credentials.username).then((res) => {
+            user = res;
+            return DAL.tokens.create(user.id, token);
+          }).then(() => {
+            user.token = token;
+
+            return user;
+          });
+        } else {
+          result = Promise.reject('incorrectCredentials');
+        }
+
+        return result;
+      });
     },
 
     // isUserExist: (email) => {
@@ -177,4 +197,8 @@ export default function (DAL) {
     //   };
     // }
   };
+}
+
+function verifyPassword(password, encodedPassword) {
+  return passwordHash.verify(password, encodedPassword);
 }

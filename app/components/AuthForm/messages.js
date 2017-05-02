@@ -10,8 +10,12 @@ export default defineMessages({
     id: 'app.components.AuthForm.header',
     defaultMessage: 'LMS Login',
   },
-  error: {
-    id: 'app.components.AuthForm.error',
+  incorrectCredentials: {
+    id: 'app.components.AuthForm.incorrectCredentials',
     defaultMessage: 'The username or password is incorrect',
+  },
+  serverError: {
+    id: 'app.components.AuthForm.serverError',
+    defaultMessage: 'Something went wrong',
   },
 });

@@ -13,24 +13,29 @@ import {
 
 const initialState = fromJS({
   isFetching: false,
-  error: false,
-  message: null
+  error: null,
+  username: null,
+  password: null,
 });
 
 function loginPageReducer(state = initialState, action) {
   switch (action.type) {
     case SUBMIT_LOGIN_FORM:
-      return state.set('isFetching', true);
+      return state.merge({
+        isFetching: true,
+        error: null,
+        username: action.payload.username,
+        password: action.payload.password,
+      });
     case SUBMIT_LOGIN_FORM_SUCCESS:
       return state.merge({
         isFetching: false,
-        error: false
+        error: null,
       });
     case SUBMIT_LOGIN_FORM_FAILURE:
       return state.merge({
         isFetching: false,
-        error: true,
-        message: action.payload.message
+        error: action.payload,
       });
     default:
       return state;

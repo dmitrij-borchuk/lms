@@ -32,6 +32,13 @@ export default function (connection) {
         },
       }).then((res) => !res ? null : processInstance(res));
     },
+    getPassword(email) {
+      return model.findOne({
+        where: {
+          email,
+        },
+      }).then((res) => !res ? null : res.password);
+    },
     create(data) {
       return model.create(data).then((user) => processInstance(user));
     },
@@ -119,8 +126,12 @@ export default function (connection) {
   };
 
   function processInstance(instance) {
-    return instance.get({
+    const plain = instance.get({
       plain: true,
     });
+
+    delete plain.password;
+
+    return plain;
   }
 }

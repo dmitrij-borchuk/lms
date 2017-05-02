@@ -23,32 +23,25 @@ export default function (server, DAL) {
     method: 'POST',
     path: '/api/login',
     config: {
+      description: 'Authenticate user',
+      notes: 'Authenticate user with login and password',
+      tags: ['api'],
+      validate: {
+        payload: {
+          password: Joi.string().required(),
+          username: Joi.string().required(),
+        },
+      },
       handler(request, reply) {
-        const user = request.payload;
-
-        DAL.users.getByEmail(user.username).then((response) => {
-          if (!response) {
-            reply(Boom.unauthorized('THE_USERNAME_OR_PASSWORD_IS_INCORRECT'));
+        usersCtrl.login(request.payload).then(
+          (res) => reply(res)
+        ).catch((err) => {
+          if (err instanceof Error) {
+            reply(Boom.badImplementation(err));
           } else {
-            reply();
+            reply(Boom.badRequest(err));
           }
         });
-
-        // DAL.users.getUserByEmail(user.login).then((response) => {
-        //   if ( response && usersController.verifyPassword(user, response.password) ) {
-        //     let token = utils.newToken();
-        //     DAL.users.updateToken(token, user.login).then(() => {
-        //       user.token = token;
-        //       reply(user);
-        //     }, () => {
-        //       reply(Boom.badImplementation('Server error'));
-        //     });
-        //   } else {
-        //     reply(Boom.unauthorized('The username or password is incorrect'));
-        //   }
-        // }, () => {
-        //   reply(Boom.unauthorized('The username or password is incorrect'));
-        // });
       },
     },
   });
