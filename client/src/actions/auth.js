@@ -1,0 +1,76 @@
+import Cookies from 'js-cookie';
+
+import { auth } from '../api';
+
+export const AUTH_LOGIN_FETCHING = 'AUTH_LOGIN_FETCHING';
+export const AUTH_LOGIN_FETCHING_FINISH = 'AUTH_LOGIN_FETCHING_FINISH';
+export const AUTH_LOGIN_FETCHING_ERROR = 'AUTH_LOGIN_FETCHING_ERROR';
+export function login(params) {
+  return (dispatch) => {
+    dispatch({
+      type: AUTH_LOGIN_FETCHING,
+    });
+    console.log(params);
+
+    return auth.login(params)
+    .then((res) => {
+      Cookies.set('token', res.body.token);
+      return dispatch({
+        type: AUTH_LOGIN_FETCHING_FINISH,
+        peyload: res.body.token,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: AUTH_LOGIN_FETCHING_ERROR,
+        payload: err.response.body.message,
+      });
+      return Promise.reject();
+    });
+  };
+}
+
+export const AUTH_SET_REDIRECT_URL = 'AUTH_SET_REDIRECT_URL';
+export function setRedirectUrl(url) {
+  return {
+    type: AUTH_SET_REDIRECT_URL,
+    payload: {
+      url,
+    },
+  };
+}
+
+export const AUTH_CURRENT_USER_FETCHING = 'AUTH_CURRENT_USER_FETCHING';
+export const AUTH_CURRENT_USER_FETCHING_FINISH = 'AUTH_CURRENT_USER_FETCHING_FINISH';
+export const AUTH_CURRENT_USER_FETCHING_ERROR = 'AUTH_CURRENT_USER_FETCHING_ERROR';
+export function getCurrentUser() {
+  return (dispatch) => {
+    dispatch({
+      type: AUTH_CURRENT_USER_FETCHING,
+    });
+
+    return auth.getCurrentUser()
+    .then(res => dispatch({
+      type: AUTH_CURRENT_USER_FETCHING_FINISH,
+      payload: res.body,
+    }))
+    .catch((err) => {
+      if (err instanceof Error) {
+        throw err;
+      } else {
+        dispatch({
+          type: AUTH_CURRENT_USER_FETCHING_ERROR,
+        });
+        return Promise.reject(err);
+      }
+    });
+  };
+}
+
+export const AUTH_SET_CURRENT_USER = 'AUTH_SET_CURRENT_USER';
+export function setCurrentUser(user) {
+  return {
+    type: AUTH_SET_CURRENT_USER,
+    payload: user,
+  };
+}

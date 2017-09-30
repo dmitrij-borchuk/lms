@@ -1,0 +1,10 @@
+{
+    "extends": "airbnb-base",
+    "globals": {
+        "$": true
+    },
+    "rules": {
+        "function-paren-newline": ["error", "consistent"],
+        "newline-per-chained-call": 0
+    }
+}
