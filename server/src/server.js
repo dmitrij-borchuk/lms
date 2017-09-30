@@ -4,6 +4,7 @@ import migrations from './migrations/migrations';
 import routing from './routing';
 import config from './config';
 import docs from './docs';
+import auth from './auth';
 
 export default function () {
   // Create a server with a host and port
@@ -23,10 +24,12 @@ export default function () {
   //   }
   // }).then(() => {
   migrations().then(
-    routing(server),
+    () => auth(server),
+  ).then(
+    () => routing(server),
+  ).then(
+    () => docs(server),
   ).then(() => {
-    docs(server);
-  }).then(() => {
     // Start the server
     server.start((err) => {
       if (err) {

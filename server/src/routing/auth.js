@@ -1,7 +1,7 @@
 import Boom from 'boom';
 import Joi from 'joi';
 
-import usersCtrl from '../controllers/userCtrl';
+import usersCtrl from '../controllers/usersCtrl';
 
 export default function (server) {
   // const utils = require('../utils.js');
@@ -34,16 +34,20 @@ export default function (server) {
     },
   });
 
-  // /**
-  //  * @api {post} /api/set-password Set new password for user
-  //  *
-  //  * @apiParam {String}   token            token for reseting
-  //  * @apiParam {String}   password         user password
-  //  *
-  //  * @apiName ResetPassword
-  //  * @apiGroup Users
-  //  *
-  //  */
+  server.route({
+    method: 'GET',
+    path: '/api/get-current-user',
+    config: {
+      description: 'Current user information',
+      notes: 'Returns information about current user ',
+      tags: ['api'],
+      auth: 'simple',
+      handler(request, reply) {
+        reply(request.auth.credentials);
+      },
+    },
+  });
+
   // server.route({
   //   method: 'POST',
   //   path: '/api/set-password',

@@ -1,4 +1,4 @@
-import users from './users';
+import auth from './auth';
 import initiating from './initiating';
 
 export default function (server) {
@@ -10,6 +10,6 @@ export default function (server) {
     },
   });
 
-  users(server);
+  auth(server);
   initiating(server);
 }

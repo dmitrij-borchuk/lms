@@ -3,7 +3,7 @@ import pug from 'pug';
 import Joi from 'joi';
 import Boom from 'boom';
 
-import usersCtrl from '../controllers/userCtrl';
+import usersCtrl from '../controllers/usersCtrl';
 
 function compile(filename) {
   return pug.renderFile(filename, {

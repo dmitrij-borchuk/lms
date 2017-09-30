@@ -30,22 +30,20 @@ export default function authReducers(state = defaultState, action) {
 
     // Current user
     case auth.AUTH_CURRENT_USER_FETCHING:
-      return {
-        ...state,
+      return state.merge({
         currentUserInfoFatching: true,
-      };
+      });
     case auth.AUTH_CURRENT_USER_FETCHING_FINISH:
-      return {
-        ...state,
+      return state.merge({
         currentUserInfoFatching: false,
         currentUser: action.payload,
-      };
+      });
     case auth.AUTH_CURRENT_USER_FETCHING_ERROR:
-      return {
+      return state.merge({
         ...state,
         currentUserInfoFatching: false,
         currentUser: null,
-      };
+      });
 
     default:
       return state;
