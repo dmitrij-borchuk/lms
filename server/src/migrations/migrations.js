@@ -3,13 +3,11 @@ import DAL from '../dal';
 import mf1 from './scripts/v001';
 import mf2 from './scripts/v002';
 import mf3 from './scripts/v003';
-import mf4 from './scripts/v004';
 
 const migrations = [
   mf1,
   mf2,
   mf3,
-  mf4,
 ];
 
 function setDbVersion(v) {

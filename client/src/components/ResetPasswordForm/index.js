@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import { FormattedMessage } from 'react-intl';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-
-// import messages from './messages';
 
 const Container = styled.div`
   margin: auto;
@@ -33,22 +30,19 @@ const ProgressContainer = styled.div`
   background-color: rgba(0,0,0,0.1);
   position: absolute;
   height: 100%;
-  padding-top: 75px;
   text-align: center;
   z-index: 2;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-function AuthForm(props) {
-  let username = props.username || '';
-  let password = props.password || '';
+function ResetPasswordForm(props) {
+  let email = '';
 
-  function usernameChanged(e, value) {
-    username = value;
-  }
-
-  function passwordChanged(e, value) {
-    password = value;
+  function emailChanged(e, value) {
+    email = value;
   }
 
   function getErrorText(error) {
@@ -65,7 +59,7 @@ function AuthForm(props) {
       <Paper zDepth={3} >
         <Paper zDepth={1} >
           <Header>
-            LMS Login
+            LMS Reset password
           </Header>
         </Paper>
         <ContentContainer>
@@ -76,22 +70,17 @@ function AuthForm(props) {
           }
           <Content>
             <TextField
+              name="email"
               floatingLabelText="Email"
               fullWidth
-              onChange={usernameChanged}
+              onChange={emailChanged}
               errorText={getErrorText(props.error)}
-            />
-            <TextField
-              type="password"
-              floatingLabelText="Password"
-              fullWidth
-              onChange={passwordChanged}
             />
             <RaisedButton
               primary
               label="Submit"
               fullWidth
-              onClick={() => { props.onSubmit({ username, password }); }}
+              onClick={() => { props.onSubmit({ email }); }}
             />
           </Content>
         </ContentContainer>
@@ -100,12 +89,10 @@ function AuthForm(props) {
   );
 }
 
-AuthForm.propTypes = {
+ResetPasswordForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
   error: PropTypes.object,
-  username: PropTypes.string,
-  password: PropTypes.string,
 };
 
-export default AuthForm;
+export default ResetPasswordForm;

@@ -10,7 +10,6 @@ export function login(params) {
     dispatch({
       type: AUTH_LOGIN_FETCHING,
     });
-    console.log(params);
 
     return auth.login(params)
     .then((res) => {
@@ -26,6 +25,34 @@ export function login(params) {
         payload: err.response.body.message,
       });
       return Promise.reject();
+    });
+  };
+}
+
+export const AUTH_RESET_PASSWORD_FETCHING = 'AUTH_RESET_PASSWORD_FETCHING';
+export const AUTH_RESET_PASSWORD_FETCHING_FINISH = 'AUTH_RESET_PASSWORD_FETCHING_FINISH';
+export const AUTH_RESET_PASSWORD_FETCHING_ERROR = 'AUTH_RESET_PASSWORD_FETCHING_ERROR';
+export function resetPassword(data) {
+  return (dispatch) => {
+    dispatch({
+      type: AUTH_RESET_PASSWORD_FETCHING,
+    });
+    console.log(data);
+
+    return auth.resetPassword(data)
+    .then((res) => {
+      return dispatch({
+        type: AUTH_RESET_PASSWORD_FETCHING_FINISH,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log(err.response.body.message);
+      dispatch({
+        type: AUTH_RESET_PASSWORD_FETCHING_ERROR,
+        payload: err.response.body.message,
+      });
+      return Promise.reject(err);
     });
   };
 }

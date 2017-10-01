@@ -4,11 +4,9 @@ import Boom from 'boom';
 
 import utils from '../utils';
 import mailer from '../services/mailer';
-import templatesFactory from '../services/templates';
+import templates from '../services/templates';
 import DAL from '../dal';
 import constants from '../constants';
-
-const templates = templatesFactory();
 
 function verifyPassword(password, encodedPassword) {
   return passwordHash.verify(password, encodedPassword);

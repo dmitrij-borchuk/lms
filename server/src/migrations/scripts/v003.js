@@ -2,17 +2,12 @@ import { query } from '../../database';
 
 export default {
   version: 3,
-  message: 'Created "tokens" table',
+  message: 'Add "initiated" setting',
   script() {
     const queryString = [
-      'CREATE TABLE tokens (',
-      'id int(255) NOT NULL AUTO_INCREMENT primary KEY UNIQUE, ',
-      'user int(255) NOT NULL, ',
-      'token varchar(255) NOT NULL, ',
-      'updatedAt DATETIME, ',
-      'createdAt DATETIME, ',
-      'FOREIGN KEY (user) REFERENCES users(id)',
-      ')',
+      'INSERT IGNORE INTO dbinfo ',
+      '(name, value) ',
+      'VALUES ("initiated", "0")',
     ].join('');
 
     return query(queryString);

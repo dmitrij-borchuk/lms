@@ -2,6 +2,7 @@ import Boom from 'boom';
 import Joi from 'joi';
 
 import usersCtrl from '../controllers/usersCtrl';
+import utils from '../utils';
 
 export default function (server) {
   // const utils = require('../utils.js');
@@ -17,7 +18,7 @@ export default function (server) {
       validate: {
         payload: {
           password: Joi.string().required(),
-          username: Joi.string().required(),
+          username: Joi.string().email().required(),
         },
       },
       handler(request, reply) {
@@ -62,24 +63,30 @@ export default function (server) {
   //   }
   // });
 
-  /**
-   * @api {post} /api/reset-assword Reset password for user
-   *
-   * @apiParam {String}   email            user email
-   *
-   * @apiName ResetPassword
-   * @apiGroup Users
-   *
-   */
   server.route({
     method: 'POST',
     path: '/api/reset-password',
     config: {
+      description: 'Reset password',
+      notes: 'Reset password',
+      tags: ['api'],
+      validate: {
+        payload: {
+          email: Joi.string().email().required(),
+        },
+      },
       handler(request, reply) {
-        // const usersCtrl = require('../controllers/userCtrl.js');
+        const { email } = request.payload;
 
-        // const email = request.payload.email;
-        reply();
+        usersCtrl.resetPassword(email, utils.getServerUrl(request)).then(
+          () => reply(),
+        ).catch((err) => {
+          if (err.isBoom) {
+            reply(err);
+          } else {
+            reply(Boom.badImplementation(err));
+          }
+        });
       },
     },
   });

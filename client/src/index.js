@@ -18,6 +18,7 @@ import './index.css';
 // import translationsJson from './translations/en.json';
 import App from './App';
 import LoginContainer from './containers/LoginPage';
+import ResetPasswordPage from './containers/ResetPasswordPage';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 // Import Language Provider
@@ -44,6 +45,7 @@ const store = createStore(
           <div>
             <Switch>
               <Route path="/login" component={LoginContainer} />
+              <Route path="/resetPassword" component={ResetPasswordPage} />
               <Route path="/" component={App} />
             </Switch>
           </div>

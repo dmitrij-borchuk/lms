@@ -22,7 +22,6 @@ export default {
       apiKey,
       domain,
     } = config.mailGun;
-    const mailgun = Mailgun({ apiKey, domain });
 
     return new Promise((resolve, reject) => {
       const defaultHtml = [
@@ -39,7 +38,10 @@ export default {
         html: mail.html || defaultHtml,
       };
 
+      console.log(process.env.ENVIRONMENT);
+      console.log(constants.ENVIRONMENTS.DEVELOPMENT);
       if (process.env.ENVIRONMENT !== constants.ENVIRONMENTS.DEVELOPMENT) {
+        const mailgun = Mailgun({ apiKey, domain });
         mailgun.messages().send(
           data,
           (error, body) => (error ? reject(error) : resolve(body)),
@@ -47,10 +49,10 @@ export default {
       } else {
         /* eslint-disable no-console */
         console.log('+----------------');
-        console.log('| Mail stub');
-        console.log(`| to: ${data.to}`);
-        console.log(`| subject: ${data.subject}`);
-        console.log(`| text: ${data.text}`);
+        console.log(' Mail stub');
+        console.log(` to: ${data.to}`);
+        console.log(` subject: ${data.subject}`);
+        console.log(` text: ${data.text}`);
         console.log('+----------------');
         /* eslint-enable no-console */
       }

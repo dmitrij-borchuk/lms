@@ -4,7 +4,11 @@
 import { query } from '../database';
 import sqlBuilder from '../services/sqlBuilder';
 
-const tableName = 'users';
+const TABLE_NAME = 'users';
+const TABLE_FIELDS = {
+  EMAIL: 'email',
+  RESET_TOKEN: 'resetToken',
+};
 
 // function parse(data) {
 //   const parsedData = Object.assign({}, data);
@@ -43,20 +47,29 @@ export default {
   // },
   create({ email }) {
     const request = sqlBuilder.insert()
-      .into(tableName)
-      .set('email', email)
+      .into(TABLE_NAME)
+      .set(TABLE_FIELDS.EMAIL, email)
       .toParam();
 
     return query(request);
   },
   getPassword(email) {
     const request = sqlBuilder.select()
-      .from(tableName)
-      .where(`email = "${email}"`)
+      .from(TABLE_NAME)
+      .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
       .toParam();
 
     return query(request)
       .then(res => (!res ? null : res.password));
+  },
+  addResetToken(resetToken, email) {
+    const request = sqlBuilder.update()
+      .table(TABLE_NAME)
+      .set(TABLE_FIELDS.RESET_TOKEN, resetToken)
+      .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
+      .toParam();
+
+    return query(request);
   },
 };
 
@@ -91,25 +104,6 @@ export default {
 //           email,
 //         },
 //       }).then((res) => !res ? null : processInstance(res));
-//     },
-//     addResetToken(resetToken, email) {
-//       return model.findOne({
-//         where: {
-//           email,
-//         },
-//       }).then((res) => {
-//         const instance = res;
-//         let promise;
-
-//         if (!instance) {
-//           promise = Promise.reject('User not found');
-//         } else {
-//           instance.reset_token = resetToken;
-//           promise = instance.save();
-//         }
-
-//         return promise;
-//       });
 //     },
 //     newPassword(resetToken, password) {
 //       return model.findOne({

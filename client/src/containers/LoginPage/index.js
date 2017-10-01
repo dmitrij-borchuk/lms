@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { auth } from '../../actions';
 import AuthForm from '../../components/AuthForm';
 
-export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+export class LoginPage extends React.PureComponent {
   render() {
     return (
       <div>
