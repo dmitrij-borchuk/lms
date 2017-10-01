@@ -14,10 +14,9 @@ $button.on('click', () => {
     data: {
       email: $email.val(),
     },
-  }).then((res) => {
-    console.log(res);
+  }).then(() => {
+    // TODO
   }).catch((err) => {
-    console.error(err);
     $emailTextFieldError.html(parseErrorText(err.responseJSON.message));
     $emailTextField.addClass(invalidMDLClass);
   });

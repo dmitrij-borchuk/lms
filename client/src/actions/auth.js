@@ -37,7 +37,6 @@ export function resetPassword(data) {
     dispatch({
       type: AUTH_RESET_PASSWORD_FETCHING,
     });
-    console.log(data);
 
     return auth.resetPassword(data)
     .then((res) => {
@@ -46,8 +45,6 @@ export function resetPassword(data) {
       });
     })
     .catch((err) => {
-      console.log(err);
-      console.log(err.response.body.message);
       dispatch({
         type: AUTH_RESET_PASSWORD_FETCHING_ERROR,
         payload: err.response.body.message,

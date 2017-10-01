@@ -66,7 +66,6 @@ const mapStateToProps = () => ({});
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit(data) {
-      console.log(data);
       return dispatch(auth.resetPassword(data));
     },
   };

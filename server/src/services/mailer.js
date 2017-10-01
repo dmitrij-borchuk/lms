@@ -38,8 +38,6 @@ export default {
         html: mail.html || defaultHtml,
       };
 
-      console.log(process.env.ENVIRONMENT);
-      console.log(constants.ENVIRONMENTS.DEVELOPMENT);
       if (process.env.ENVIRONMENT !== constants.ENVIRONMENTS.DEVELOPMENT) {
         const mailgun = Mailgun({ apiKey, domain });
         mailgun.messages().send(

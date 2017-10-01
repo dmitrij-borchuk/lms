@@ -22,9 +22,6 @@ const config = {
     apiKey: '',
     domain: '',
   },
-  defaultAdmin: {
-    email: null,
-  },
   email: {
     noReplyAdress: 'no-reply@multicora.com',
     defaultFrom: 'no-reply@multicora.com',
