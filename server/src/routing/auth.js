@@ -105,13 +105,20 @@ export default function (server) {
         },
       },
       handler: (request, reply) => {
-        const password = request.payload.password;
-        const token = request.payload.token;
+        const {
+          password,
+          token,
+        } = request.payload;
+
         usersCtrl.setPassword(token, password).then(
-          () => reply()
-        ).catch(
-          (err) => reply(Boom.badRequest(err, err))
-        );
+          () => reply(),
+        ).catch((err) => {
+          if (err.isBoom) {
+            reply(err);
+          } else {
+            reply(Boom.badImplementation(err));
+          }
+        });
       },
     },
   });

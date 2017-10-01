@@ -101,3 +101,29 @@ export function setCurrentUser(user) {
     payload: user,
   };
 }
+
+export const SUBMIT_SET_PASSWORD_FORM = 'app/SetPasswordPage/SUBMIT_SET_PASSWORD_FORM';
+export const SUBMIT_SET_PASSWORD_FORM_SUCCESS = 'app/SetPasswordPage/SUBMIT_SET_PASSWORD_FORM_SUCCESS';
+export const SUBMIT_SET_PASSWORD_FORM_FAILURE = 'app/SetPasswordPage/SUBMIT_SET_PASSWORD_FORM_FAILURE';
+
+export function setPassword(data) {
+  return (dispatch) => {
+    dispatch({
+      type: SUBMIT_SET_PASSWORD_FORM,
+    });
+
+    return auth.setPassword(data)
+    .then((res) => {
+      return dispatch({
+        type: SUBMIT_SET_PASSWORD_FORM_SUCCESS,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: SUBMIT_SET_PASSWORD_FORM_FAILURE,
+        payload: err.response.body.message,
+      });
+      return Promise.reject(err);
+    });
+  };
+}

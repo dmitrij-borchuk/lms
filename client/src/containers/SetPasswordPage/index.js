@@ -1,18 +1,54 @@
-/*
- *
- * SetPasswordPage
- *
- */
-
-import React, { PropTypes } from 'react';
+import React ,{ PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import makeSelectSetPasswordPage from './selectors';
-import { submitSetPasswordForm } from './actions';
-import SetPasswordForm from '../../components/SetPasswordForm';
+import { withRouter } from 'react-router-dom'
 
-export class SetPasswordPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+import { setPassword } from '../../actions/auth';
+import SetPasswordForm from '../../components/SetPasswordForm';
+import { LOGIN_LINK } from '../../constants';
+
+export class SetPasswordPage extends PureComponent {
+  state = {
+    error: null,
+    isFetching: false,
+  }
+
+  onSubmit(data) {
+    const {
+      onSubmit,
+      history,
+    } = this.props;
+
+    this.setState({ isFetching: true });
+    onSubmit(data).then(
+      () => {
+        this.setState({
+          error: null,
+          isFetching: false,
+        });
+        history.push(LOGIN_LINK);
+      }
+    ).catch(
+      (err) => this.setState({
+        error: err,
+        isFetching: false,
+      })
+    );
+  }
+
   render() {
+    const {
+      password,
+    } = this.props;
+    const {
+      error,
+      isFetching,
+    } = this.state;
+    const {
+      token,
+    } = this.props.match.params;
+
     return (
       <div>
         <Helmet
@@ -22,11 +58,10 @@ export class SetPasswordPage extends React.PureComponent { // eslint-disable-lin
           ]}
         />
         <SetPasswordForm
-          onSubmit={this.props.onSubmit}
-          isFetching={this.props.isFetching}
-          isError={this.props.error}
-          token={this.props.params.token}
-          value={this.props.password}
+          onSubmit={(password) => this.onSubmit({ password, token })}
+          isFetching={isFetching}
+          error={error}
+          value={password}
         />
       </div>
     );
@@ -38,20 +73,17 @@ SetPasswordPage.propTypes = {
   isFetching: PropTypes.bool,
   error: PropTypes.bool,
   password: PropTypes.string,
-  params: {
-    token: PropTypes.string,
-  },
 };
 
-const mapStateToProps = makeSelectSetPasswordPage();
+const mapStateToProps = () => ({});
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSubmit(password, token) {
-      dispatch(submitSetPasswordForm(password, token));
+    onSubmit(data) {
+      return dispatch(setPassword(data));
     },
     dispatch,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SetPasswordPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SetPasswordPage));

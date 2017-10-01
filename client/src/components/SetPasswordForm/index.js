@@ -7,13 +7,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { FormattedMessage } from 'react-intl';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-
-import messages from './messages';
 
 const Container = styled.div`
   margin: auto;
@@ -45,7 +42,21 @@ const ProgressContainer = styled.div`
   width: 100%;
 `;
 
+
+function getErrorText(error) {
+  const errorMessages = {
+    500: 'messages.serverError.defaultMessage',
+    400: 'messages.incorrectCredentials.defaultMessage',
+  };
+
+  return error ? errorMessages[error.status] : '';
+}
+
 function SetPasswordForm(props) {
+  const {
+    error,
+    onSubmit,
+  } = props;
   let password = props.password || '';
 
   function passwordChanged(e, value) {
@@ -57,7 +68,7 @@ function SetPasswordForm(props) {
       <Paper zDepth={3} >
         <Paper zDepth={1} >
           <Header>
-            <FormattedMessage {...messages.header} />
+            Set your password
           </Header>
         </Paper>
         <ContentContainer>
@@ -72,13 +83,13 @@ function SetPasswordForm(props) {
               floatingLabelText="Password"
               fullWidth
               onChange={passwordChanged}
-              errorText={props.isError ? messages.error.defaultMessage : ''}
+              errorText={getErrorText(error)}
             />
             <RaisedButton
               primary
               label="Submit"
               fullWidth
-              onClick={() => { props.onSubmit(password, props.token); }}
+              onClick={() => { onSubmit(password); }}
             />
           </Content>
         </ContentContainer>
@@ -89,7 +100,6 @@ function SetPasswordForm(props) {
 
 SetPasswordForm.propTypes = {
   password: PropTypes.string,
-  token: PropTypes.string,
   isFetching: PropTypes.bool,
   isError: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,

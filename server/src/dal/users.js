@@ -1,5 +1,4 @@
-// import Sequelize from 'sequelize';
-// import Promise from 'promise';
+import Promise from 'promise';
 
 import { query } from '../database';
 import sqlBuilder from '../services/sqlBuilder';
@@ -8,6 +7,7 @@ const TABLE_NAME = 'users';
 const TABLE_FIELDS = {
   EMAIL: 'email',
   RESET_TOKEN: 'resetToken',
+  PASSWORD: 'password',
 };
 
 // function parse(data) {
@@ -71,6 +71,16 @@ export default {
 
     return query(request);
   },
+  newPassword(resetToken, password) {
+    const request = sqlBuilder.update()
+      .table(TABLE_NAME)
+      .set(TABLE_FIELDS.RESET_TOKEN, null)
+      .set(TABLE_FIELDS.PASSWORD, password)
+      .where(`${TABLE_FIELDS.RESET_TOKEN} = "${resetToken}"`)
+      .toParam();
+
+    return query(request);
+  },
 };
 
 // export default function (connection) {
@@ -104,26 +114,6 @@ export default {
 //           email,
 //         },
 //       }).then((res) => !res ? null : processInstance(res));
-//     },
-//     newPassword(resetToken, password) {
-//       return model.findOne({
-//         where: {
-//           reset_token: resetToken,
-//         },
-//       }).then((res) => {
-//         const instance = res;
-//         let promise;
-
-//         if (!instance) {
-//           promise = Promise.reject('Wrong token');
-//         } else {
-//           instance.reset_token = null;
-//           instance.password = password;
-//           promise = instance.save();
-//         }
-
-//         return promise;
-//       });
 //     },
 //     // update: (setting) => {
 //     //   return model.findOne({
