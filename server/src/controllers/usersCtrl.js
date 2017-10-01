@@ -32,9 +32,7 @@ export default {
     const encodedPassword = passwordHash.generate(password);
 
     return DAL.users.newPassword(token, encodedPassword).then(
-      (res) => {
-        return res.affectedRows === 0 ? Promise.reject(Boom.badRequest()) : res;
-      },
+      res => (res.affectedRows === 0 ? Promise.reject(Boom.badRequest()) : res),
     );
   },
 

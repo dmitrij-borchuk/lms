@@ -10,17 +10,16 @@ const TABLE_FIELDS = {
   PASSWORD: 'password',
 };
 
-// function parse(data) {
-//   const parsedData = Object.assign({}, data);
+function parse(data) {
+  const parsedData = Object.assign({}, data);
 
-//   delete parsedData.confirmToken;
-//   delete parsedData.password;
-//   delete parsedData.permanent;
-//   delete parsedData.resetToken;
-//   delete parsedData.token;
+  delete parsedData.confirmToken;
+  delete parsedData.password;
+  delete parsedData.permanent;
+  delete parsedData.resetToken;
 
-//   return parsedData;
-// }
+  return parsedData;
+}
 
 // function query(request) {
 //   return new Promise((resolve, reject) => {
@@ -60,7 +59,7 @@ export default {
       .toParam();
 
     return query(request)
-      .then(res => (!res ? null : res.password));
+      .then(res => (!res.length ? null : res[0].password));
   },
   addResetToken(resetToken, email) {
     const request = sqlBuilder.update()
@@ -80,6 +79,14 @@ export default {
       .toParam();
 
     return query(request);
+  },
+  getByEmail(email) {
+    const request = sqlBuilder.select()
+      .from(TABLE_NAME)
+      .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
+      .toParam();
+
+    return query(request).then(res => (res.length ? parse(res[0]) : null));
   },
 };
 
@@ -108,13 +115,6 @@ export default {
 //   return {
 //     model,
 
-//     getByEmail(email) {
-//       return model.findOne({
-//         where: {
-//           email,
-//         },
-//       }).then((res) => !res ? null : processInstance(res));
-//     },
 //     // update: (setting) => {
 //     //   return model.findOne({
 //     //     where: {

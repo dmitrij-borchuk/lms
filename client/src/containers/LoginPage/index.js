@@ -1,15 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+
 import { auth } from '../../actions';
 import AuthForm from '../../components/AuthForm';
 
 export class LoginPage extends React.PureComponent {
+  onSubmit(data) {
+    const {
+      onSubmit,
+      history,
+    } = this.props;
+
+    onSubmit(data).then(() => history.push('/'));
+  }
+
   render() {
     return (
       <div>
         <AuthForm
-          onSubmit={this.props.onSubmit}
+          onSubmit={(data) => this.onSubmit(data)}
           isFetching={this.props.isFetching}
           error={this.props.error}
           username={this.props.username}
@@ -35,10 +46,9 @@ const mapStateToProps = ({ auth }) => ({
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit(credentials) {
-      dispatch(auth.login(credentials));
+      return dispatch(auth.login(credentials));
     },
-    dispatch,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

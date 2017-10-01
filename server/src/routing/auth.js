@@ -49,20 +49,6 @@ export default function (server) {
     },
   });
 
-  // server.route({
-  //   method: 'POST',
-  //   path: '/api/set-password',
-  //   config: {
-  //     handler: function (request, reply) {
-  //       const usersCtrl = require('../controllers/userCtrl.js');
-
-  //       const token = request.payload.token;
-  //       const password = request.payload.password;
-
-  //     }
-  //   }
-  // });
-
   server.route({
     method: 'POST',
     path: '/api/reset-password',
