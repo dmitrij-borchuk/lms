@@ -2,29 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Switch,
-  // Route,
+  Route,
   Redirect,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './App.css';
 import { loader } from './actions';
+import Dashboard from './containers/Dashboard';
 
-// class App extends Component {
-//   render() {
-//     return (
-//       <div className="App">
-//         <div className="App-header">
-//           <img src={logo} className="App-logo" alt="logo" />
-//           <h2>Welcome to React</h2>
-//         </div>
-//         <p className="App-intro">
-//           To get started, edit <code>src/App.js</code> and save to reload.
-//         </p>
-//       </div>
-//     );
-//   }
-// }
 class App extends PureComponent {
   static propTypes = {
     currentUser: PropTypes.shape({
@@ -84,7 +70,7 @@ class App extends PureComponent {
 
           {/* Routing for logged in user */}
           <Switch>
-            {/* <Route path="/dashboard" component={DashboardPage} /> */}
+            <Route path="/dashboard" component={Dashboard} />
             {/* <Route path="/users" component={UsersPage} /> */}
             {/* <Route path="/user/:id" component={UserProfilePage} /> */}
 
@@ -99,9 +85,9 @@ class App extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
-  currentUser: state.auth.currentUser,
-  isFetching: state.loader.isFetching,
+const mapStateToProps = ({ auth, loader }) => ({
+  currentUser: auth.get('currentUser'),
+  isFetching: loader.isFetching,
 });
 
 const mapDispatchToProps = dispatch => ({
