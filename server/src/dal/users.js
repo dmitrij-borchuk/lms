@@ -2,9 +2,11 @@ import Promise from 'promise';
 
 import { query } from '../database';
 import sqlBuilder from '../services/sqlBuilder';
+import tokens from './tokens';
 
 const TABLE_NAME = 'users';
 const TABLE_FIELDS = {
+  ID: 'id',
   EMAIL: 'email',
   RESET_TOKEN: 'resetToken',
   PASSWORD: 'password',
@@ -84,6 +86,18 @@ export default {
     const request = sqlBuilder.select()
       .from(TABLE_NAME)
       .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
+      .toParam();
+
+    return query(request).then(res => (res.length ? parse(res[0]) : null));
+  },
+  getUserByToken(token) {
+    const requestUserIdByToken = sqlBuilder.select()
+      .field(tokens.TABLE_FIELDS.USER)
+      .from(tokens.TABLE_NAME)
+      .where(`${tokens.TABLE_FIELDS.TOKEN} = "${token}"`);
+    const request = sqlBuilder.select()
+      .from(TABLE_NAME)
+      .where(`${TABLE_FIELDS.ID} = ?`, requestUserIdByToken)
       .toParam();
 
     return query(request).then(res => (res.length ? parse(res[0]) : null));

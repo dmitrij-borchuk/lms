@@ -7,7 +7,7 @@ const constants = {
     NO: '0',
   },
   INITIALIZING_SETTING_KEY: 'initiated',
-  AUTH_TOKEN_NAME: 'x-biz-token',
+  AUTH_TOKEN_NAME: 'x-token',
 };
 
 export default constants;

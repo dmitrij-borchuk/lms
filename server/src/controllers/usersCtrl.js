@@ -77,6 +77,50 @@ export default {
     }));
   },
 
+  getUserByToken(token) {
+    return DAL.users.getUserByToken(token);
+
+    // .then((roles) => {
+    //   let rolesPromisies = roles.map(function(role) {
+    //     return DAL.roles.getRoleById(role.id_role);
+    //   });
+
+    //   return Promise.all(rolesPromisies);
+    // }).then((roles) => {
+    //   rolesArr = roles.map(function(role) {
+    //     return role.name;
+    //   });
+
+    //   let getActionsPromisies = roles.map(function(role) {
+    //     return DAL.actions.getActionsByRoleId(role.id);
+    //   });
+
+    //   return Promise.all(getActionsPromisies);
+    // }).then((actions) => {
+    //   let actionsId = [];
+    //   if (actions.length > 0) {
+    //     actionsId = actions[0].map(function(action) {
+    //       return action.id_action;
+    //     });
+    //   }
+
+    //   let actionsPromisies = actionsId.map(function(action) {
+    //     return DAL.actions.getActionById(action);
+    //   });
+
+    //   return Promise.all(actionsPromisies);
+    // }).then((actions) => {
+    //   actionsArr = actions.map(function(action) {
+    //     return action.name;
+    //   });
+    // }).then(() => {
+    //   user.roles = rolesArr;
+    //   user.actions = actionsArr;
+
+    //   return user;
+    // });
+  },
+
   // isUserExist: (email) => {
   //   return new Promise((resolve) => {
   //     DAL.users.getUserByEmail(email).then(() => {
@@ -150,56 +194,6 @@ export default {
   //     }, (err) => {
   //       reject(err);
   //     });
-  //   });
-  // },
-
-  // getUserByToken: (token) => {
-  //   let actionsArr;
-  //   let rolesArr;
-  //   let user;
-
-  //   return DAL.users.getUserByToken(token).then((res) => {
-  //     user = res;
-
-  //     return DAL.roles.getRolesByUserId(user.id);
-  //   }).then((roles) => {
-  //     let rolesPromisies = roles.map(function(role) {
-  //       return DAL.roles.getRoleById(role.id_role);
-  //     });
-
-  //     return Promise.all(rolesPromisies);
-  //   }).then((roles) => {
-  //     rolesArr = roles.map(function(role) {
-  //       return role.name;
-  //     });
-
-  //     let getActionsPromisies = roles.map(function(role) {
-  //       return DAL.actions.getActionsByRoleId(role.id);
-  //     });
-
-  //     return Promise.all(getActionsPromisies);
-  //   }).then((actions) => {
-  //     let actionsId = [];
-  //     if (actions.length > 0) {
-  //       actionsId = actions[0].map(function(action) {
-  //         return action.id_action;
-  //       });
-  //     }
-
-  //     let actionsPromisies = actionsId.map(function(action) {
-  //       return DAL.actions.getActionById(action);
-  //     });
-
-  //     return Promise.all(actionsPromisies);
-  //   }).then((actions) => {
-  //     actionsArr = actions.map(function(action) {
-  //       return action.name;
-  //     });
-  //   }).then(() => {
-  //     user.roles = rolesArr;
-  //     user.actions = actionsArr;
-
-  //     return user;
   //   });
   // },
 

@@ -17,4 +17,6 @@ export default {
 
     return query(request);
   },
+  TABLE_NAME,
+  TABLE_FIELDS,
 };

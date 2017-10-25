@@ -11,21 +11,23 @@ export function login(params) {
       type: AUTH_LOGIN_FETCHING,
     });
 
-    return auth.login(params)
-    .then((res) => {
-      Cookies.set('token', res.body.token);
-      return dispatch({
-        type: AUTH_LOGIN_FETCHING_FINISH,
-        peyload: res.body.token,
-      });
-    })
-    .catch((err) => {
-      dispatch({
-        type: AUTH_LOGIN_FETCHING_ERROR,
-        payload: err.response.body.message,
-      });
-      return Promise.reject();
-    });
+    return auth.login(params).then(
+      (res) => {
+        Cookies.set('token', res.body.token);
+        return dispatch({
+          type: AUTH_LOGIN_FETCHING_FINISH,
+          peyload: res.body.token,
+        });
+      }
+    ).catch(
+      (err) => {
+        dispatch({
+          type: AUTH_LOGIN_FETCHING_ERROR,
+          payload: err.response.body.message,
+        });
+        return Promise.reject();
+      }
+    );
   };
 }
 
@@ -73,7 +75,7 @@ export function getCurrentUser() {
       type: AUTH_CURRENT_USER_FETCHING,
     });
 
-    return auth.getCurrentUser()
+    return auth.getCurrentUser(Cookies.get('token'))
     .then(res => dispatch({
       type: AUTH_CURRENT_USER_FETCHING_FINISH,
       payload: res.body,

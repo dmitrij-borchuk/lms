@@ -9,11 +9,11 @@ import auth from './auth';
 const parseError = (error) => {
   const sqlErrorString = /ECONNREFUSED .*:3306/;
   if (sqlErrorString.test(error)) {
-    console.error('\n=================================');
-    console.error('Could not connect to the database');
-    console.error('=================================\n');
+    console.error('\n================================='); // eslint-disable-line no-console
+    console.error('Could not connect to the database'); // eslint-disable-line no-console
+    console.error('=================================\n'); // eslint-disable-line no-console
   }
-  console.error(error);
+  console.error(error); // eslint-disable-line no-console
 };
 
 export default function () {
@@ -67,5 +67,5 @@ export default function () {
     // }).catch( (err) => {
     //   console.error(err);
     // });
-  }).catch(err => parseError(err)); // eslint-disable-line no-console
+  }).catch(err => parseError(err));
 }
