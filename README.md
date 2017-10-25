@@ -4,14 +4,14 @@ Open `/init/` and enter email of the first administrator
 # Run
 
 ## Development
-``` Client
+Client
+```
 yarn start
 ```
-``` Server
+Server
+```
 yarn dev
 ```
-
-============
 
 # Road map
 
