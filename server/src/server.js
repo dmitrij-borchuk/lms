@@ -6,6 +6,16 @@ import config from './config';
 import docs from './docs';
 import auth from './auth';
 
+const parseError = (error) => {
+  const sqlErrorString = /ECONNREFUSED .*:3306/;
+  if (sqlErrorString.test(error)) {
+    console.error('\n=================================');
+    console.error('Could not connect to the database');
+    console.error('=================================\n');
+  }
+  console.error(error);
+};
+
 export default function () {
   // Create a server with a host and port
   const server = new Hapi.Server();
@@ -57,5 +67,5 @@ export default function () {
     // }).catch( (err) => {
     //   console.error(err);
     // });
-  }).catch(err => console.error(err)); // eslint-disable-line no-console
+  }).catch(err => parseError(err)); // eslint-disable-line no-console
 }

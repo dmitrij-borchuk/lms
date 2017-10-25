@@ -63,7 +63,7 @@ export default {
         db.query(createTable, () => {
           db.query(addVersion, err => (err ? reject(err) : resolve()));
         });
-      });
+      }).catch(err => reject(err));
     });
   },
 };
