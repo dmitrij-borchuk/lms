@@ -4,16 +4,21 @@ Open `/init/` and enter email of the first administrator
 # Run
 
 ## Development
-Client
+Client:
 ```
 yarn start
 ```
-Server
+Server:
 ```
 yarn dev
 ```
 
 # Road map
+
+- [ ] Schedule
+- [ ] Attendance
+- [ ] Groups
+- [ ] Tests
 
 ## Authentication and authorization
   Login
@@ -37,7 +42,12 @@ yarn dev
 
 ## Attendance
   Report
+
 ## Schedule
+List of the classes with time and date
+  * Add/remove classes
+  * Edit classes
+  * Assign users
 
 ## Groups
 
