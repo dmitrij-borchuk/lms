@@ -1,8 +1,10 @@
 
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+
+import { PAGES } from '../../constants';
 
 function AppDrawer({ opened, close }) {
   return (
@@ -11,11 +13,26 @@ function AppDrawer({ opened, close }) {
       open={opened}
       onRequestChange={close}
     >
-      <MenuItem>Classes</MenuItem>
+      <Link
+        to={PAGES.DASHBOARD}
+        onClick={close}
+      >
+        <MenuItem>
+          Dashboard
+        </MenuItem>
+      </Link>
+      <Link
+        to={PAGES.CLASSES}
+        onClick={close}
+      >
+        <MenuItem>
+          Classes
+        </MenuItem>
+      </Link>
     </Drawer>
   );
 }
 
 AppDrawer.propTypes = {};
 
-export default withRouter(AppDrawer);
+export default AppDrawer;
