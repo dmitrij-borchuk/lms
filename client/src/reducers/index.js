@@ -5,6 +5,7 @@ import { localeReducer } from 'react-localize-redux';
 import auth from './auth';
 // import users from './users';
 import loader from './loader';
+import drawer from './drawer';
 // import settings from './settings';
 // import dashboard from './dashboard';
 
@@ -14,6 +15,7 @@ export default combineReducers({
   auth,
   // users,
   loader,
+  drawer,
   // settings,
   // dashboard,
 });

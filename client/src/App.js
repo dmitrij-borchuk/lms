@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import './App.css';
 import { loader } from './actions';
 import Dashboard from './containers/Dashboard';
+import Drawer from './containers/Drawer';
+import AppHeader from './containers/AppHeader';
 
 class App extends PureComponent {
   static propTypes = {
@@ -24,20 +26,12 @@ class App extends PureComponent {
     currentUser: null,
   };
 
-  state = {
-    menuIsOpened: false,
-  }
-
   componentWillMount() {
     const {
       getInitialData,
     } = this.props;
 
     getInitialData();
-  }
-
-  toggleMenu(state) {
-    this.setState({ menuIsOpened: state });
   }
 
   render() {
@@ -52,21 +46,8 @@ class App extends PureComponent {
     } else if (!isFetching) {
       rendering = (
         <div className="App">
-          {/* <AppBar
-            iconElementLeft={
-              <IconButton>
-                {this.state.menuIsOpened ? (
-                  <NavigationClose onTouchTap={() => this.toggleMenu(false)} />
-                ) : (
-                  <NavigationMenu onTouchTap={() => this.toggleMenu(true)} />
-                )}
-              </IconButton>}
-            iconElementRight={<LoggedInMenu />}
-          /> */}
-          {/* <Menu
-            isOpened={this.state.menuIsOpened}
-            onChange={opened => this.toggleMenu(opened)}
-          /> */}
+        <AppHeader />
+        <Drawer />
 
           {/* Routing for logged in user */}
           <Switch>
