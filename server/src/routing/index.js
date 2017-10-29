@@ -1,5 +1,6 @@
 import auth from './auth';
 import initiating from './initiating';
+import classes from './classes';
 
 export default function (server) {
   server.route({
@@ -12,4 +13,5 @@ export default function (server) {
 
   auth(server);
   initiating(server);
+  classes(server);
 }

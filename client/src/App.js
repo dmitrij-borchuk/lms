@@ -12,6 +12,7 @@ import { loader } from './actions';
 import { PAGES } from './constants';
 import Dashboard from './containers/Dashboard';
 import ClassesPage from './containers/ClassesPage';
+import EditClassPage from './containers/EditClassPage';
 import Drawer from './containers/Drawer';
 import AppHeader from './containers/AppHeader';
 
@@ -55,6 +56,7 @@ class App extends PureComponent {
           <Switch>
             <Route path={PAGES.DASHBOARD} component={Dashboard} />
             <Route path={PAGES.CLASSES} component={ClassesPage} />
+            <Route path={PAGES.EDIT_CLASSES} component={EditClassPage} />
             {/* <Route path="/users" component={UsersPage} /> */}
             {/* <Route path="/user/:id" component={UserProfilePage} /> */}
 

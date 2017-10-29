@@ -75,7 +75,7 @@ export function getCurrentUser() {
       type: AUTH_CURRENT_USER_FETCHING,
     });
 
-    return auth.getCurrentUser(Cookies.get('token'))
+    return auth.getCurrentUser()
     .then(res => dispatch({
       type: AUTH_CURRENT_USER_FETCHING_FINISH,
       payload: res.body,

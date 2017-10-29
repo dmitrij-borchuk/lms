@@ -1,11 +1,33 @@
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import ClassesPage from '../../components/ClassesPage';
+import { classes } from '../../actions'
 
-const mapStateToProps = () => ({});
+class ClassesPageContainer extends PureComponent {
+  componentDidMount() {
+    const {
+      getAll,
+    } = this.props;
 
-function mapDispatchToProps(dispatch) {
-  return {};
+    getAll();
+  }
+
+  render() {
+    return (
+      <ClassesPage {...this.props} />
+    );
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClassesPage);
+const mapStateToProps = ({ classes }) => ({
+  list: classes.get('list'),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getAll: () => dispatch(classes.getAll()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClassesPageContainer);

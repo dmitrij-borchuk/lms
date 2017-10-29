@@ -5,4 +5,5 @@ export const PAGES = {
   HOME: '/',
   DASHBOARD: '/dashboard',
   CLASSES: '/classes',
+  EDIT_CLASSES: '/edit-classes',
 };
