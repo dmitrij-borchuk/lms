@@ -19,7 +19,6 @@ export default function ClassesPage(props) {
   const {
     list,
   } = props;
-  console.log(list);
 
   return (
     <div>

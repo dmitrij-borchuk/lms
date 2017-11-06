@@ -18,6 +18,7 @@ import ClassesPage from './containers/ClassesPage';
 import EditClassPage from './containers/EditClassPage';
 
 import GroupsPage from './containers/GroupsPage';
+import EditGroupPage from './containers/EditGroupPage';
 
 class App extends PureComponent {
   static propTypes = {
@@ -63,6 +64,7 @@ class App extends PureComponent {
             <Route path={PAGES.EDIT_CLASSES} component={EditClassPage} />
 
             <Route path={PAGES.GROUPS} component={GroupsPage} />
+            <Route path={PAGES.EDIT_GROUP} component={EditGroupPage} />
             {/* <Route path="/users" component={UsersPage} /> */}
             {/* <Route path="/user/:id" component={UserProfilePage} /> */}
 

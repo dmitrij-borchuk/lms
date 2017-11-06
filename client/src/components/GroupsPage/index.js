@@ -27,14 +27,14 @@ export default function ClassesPage(props) {
         {list.map(item => (
           <ListItem
             key={item.get('id')}
-            primaryText={item.get('title')}
+            primaryText={item.get('name')}
           />
         ))}
       </List>
 
       {/* Floating btn */}
       <AddButton>
-        <Link to={PAGES.EDIT_CLASSES}>
+        <Link to={PAGES.EDIT_GROUP}>
           <FloatingActionButton>
             <ContentAdd />
           </FloatingActionButton>

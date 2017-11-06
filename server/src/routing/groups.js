@@ -5,13 +5,11 @@ import groupsCtrl from '../controllers/groupsCtrl';
 
 const getSchema = (forReturn) => {
   const schema = {
-    title: Joi.string().required(),
+    name: Joi.string().required(),
+    description: [Joi.string(), null],
   };
   if (forReturn) {
     schema.id = Joi.number().required();
-    schema.author = Joi.number().required();
-    schema.updatedAt = Joi.date().iso().required();
-    schema.createdAt = Joi.date().iso().required();
   }
   return Joi.object(schema);
 };
