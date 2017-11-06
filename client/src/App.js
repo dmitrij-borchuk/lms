@@ -10,11 +10,14 @@ import { connect } from 'react-redux';
 import './App.css';
 import { loader } from './actions';
 import { PAGES } from './constants';
-import Dashboard from './containers/Dashboard';
-import ClassesPage from './containers/ClassesPage';
-import EditClassPage from './containers/EditClassPage';
 import Drawer from './containers/Drawer';
 import AppHeader from './containers/AppHeader';
+import Dashboard from './containers/Dashboard';
+
+import ClassesPage from './containers/ClassesPage';
+import EditClassPage from './containers/EditClassPage';
+
+import GroupsPage from './containers/GroupsPage';
 
 class App extends PureComponent {
   static propTypes = {
@@ -55,8 +58,11 @@ class App extends PureComponent {
           {/* Routing for logged in user */}
           <Switch>
             <Route path={PAGES.DASHBOARD} component={Dashboard} />
+
             <Route path={PAGES.CLASSES} component={ClassesPage} />
             <Route path={PAGES.EDIT_CLASSES} component={EditClassPage} />
+
+            <Route path={PAGES.GROUPS} component={GroupsPage} />
             {/* <Route path="/users" component={UsersPage} /> */}
             {/* <Route path="/user/:id" component={UserProfilePage} /> */}
 

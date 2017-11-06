@@ -13,6 +13,20 @@ Server:
 yarn dev
 ```
 
+## Docker (DRAFT)
+### Build
+```
+docker build . -t lms-server
+```
+### Run
+```
+docker run lms-server pm2 start npm -- start
+```
+TODO:
+```
+docker run -e "NODE_ENV=production" lms-server pm2 start npm -- start
+```
+
 # Road map
 
 - [ ] Schedule

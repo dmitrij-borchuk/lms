@@ -6,4 +6,5 @@ export const PAGES = {
   DASHBOARD: '/dashboard',
   CLASSES: '/classes',
   EDIT_CLASSES: '/edit-classes',
+  GROUPS: '/groups',
 };

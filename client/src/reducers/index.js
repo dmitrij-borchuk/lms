@@ -8,6 +8,7 @@ import auth from './auth';
 import loader from './loader';
 import drawer from './drawer';
 import classes from './classes';
+import groups from './groups';
 // import settings from './settings';
 // import dashboard from './dashboard';
 
@@ -19,6 +20,7 @@ export default combineReducers({
   loader,
   drawer,
   classes,
+  groups,
   // settings,
   // dashboard,
   form: formReducer,

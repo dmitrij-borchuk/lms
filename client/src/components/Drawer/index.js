@@ -29,6 +29,14 @@ function AppDrawer({ opened, close }) {
           Classes
         </MenuItem>
       </Link>
+      <Link
+        to={PAGES.GROUPS}
+        onClick={close}
+      >
+        <MenuItem>
+          Groups
+        </MenuItem>
+      </Link>
     </Drawer>
   );
 }
