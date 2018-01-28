@@ -1,28 +1,27 @@
 import migrator from './migrator';
-import DAL from '../dal';
 import mf1 from './scripts/v001';
-import mf2 from './scripts/v002';
-import mf3 from './scripts/v003';
+import { SYSTEM_DB_NAME } from '../constants';
+import openDb from '../services/fileDB';
+// import mf2 from './scripts/v002';
+// import mf3 from './scripts/v003';
 
 const migrations = [
   mf1,
-  mf2,
-  mf3,
+  // mf2,
+  // mf3,
 ];
 
-function setDbVersion(v) {
-  return DAL.settings.update({
-    name: 'version',
-    value: v,
-  }).then(res => res && res.version)
-    .catch(err => console.error(new Error(err))); // eslint-disable-line no-console
+async function setDbVersion(v) {
+  const db = await openDb(SYSTEM_DB_NAME);
+  return db.set('dbVersion', v);
 }
 
-function getDbVersion() {
-  return DAL.settings.getByName('version').then(res => res.value);
+async function getDbVersion() {
+  const db = await openDb(SYSTEM_DB_NAME);
+  return db.get('dbVersion') || 0;
 }
 
-export default function () {
+export default async function () {
   const migrationOptions = {
     setDbVersion,
     getDbVersion,
@@ -32,12 +31,15 @@ export default function () {
   /* eslint-disable no-console */
   console.log('');
   console.log('    Start migrations');
-  return DAL.settings.create()
-    .then(() => migrator(migrationOptions))
-    .then((newV) => {
-      console.log('    Finish migrations');
-      console.log(`    DB version: ${newV}`);
-      console.log('');
-    });
+  const migrationResult = await migrator(migrationOptions);
+
+  migrationResult.messages.forEach(element => console.log(`    ${element}`));
+  if (migrationResult.error) {
+    console.error(migrationResult.error);
+  } else {
+    console.log('    Finish migrations');
+  }
+  console.log(`    DB version: ${migrationResult.currentVersion}`);
+
   /* eslint-enable no-console */
 }

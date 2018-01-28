@@ -1,68 +1,47 @@
-import Promise from 'promise';
+async function runNext(migrations, v, index, setDbVersion) {
+  const currentMigration = migrations[index];
 
-function fillMigrations(migrations = []) {
-  const mg = {};
-
-  migrations.forEach((migration) => {
-    if (mg[migration.version]) {
-      console.log('    Migration with this version already exists.'); // eslint-disable-line no-console
-    } else {
-      mg[migration.version] = migration;
+  if (currentMigration) {
+    if (currentMigration.version > v) {
+      await currentMigration.script();
+      await setDbVersion(currentMigration.version);
     }
-  });
-
-  return mg;
+    await runNext(migrations, v, index + 1);
+  }
 }
 
-function migrationEnd(msg) {
-  console.log(`    Finished: ${msg}`); // eslint-disable-line no-console
+async function runAllMigrations(migrations, currentDbVersion, setDbVersion) {
+  return runNext(migrations, currentDbVersion, 0, setDbVersion);
 }
 
-function runMigration(migrationFunc, msg, callback) {
-  return migrationFunc().then(() => {
-    migrationEnd(msg);
-    callback();
-  }).catch((err) => {
-    console.error(new Error(err)); // eslint-disable-line no-console
-  });
+function getMessages(migrations, vFrom, vTo) {
+  return migrations.filter(
+    item => item.version > vFrom && item.version <= vTo,
+  ).map(
+    item => item.message,
+  );
 }
 
-function runAllMigrations(migrations, currentDbVersion, setDbVersion) {
-  return new Promise((resolve) => {
-    const index = currentDbVersion;
+export default async function (options = {}) {
+  const {
+    migrations,
+    getDbVersion,
+    setDbVersion,
+  } = options;
+  const startVersion = await getDbVersion();
+  let currentErr = null;
 
-    function next(migrationsList, v, cb) {
-      const currentMigration = migrationsList[v];
+  try {
+    await runAllMigrations(migrations, startVersion, setDbVersion);
+  } catch (err) {
+    currentErr = err;
+  }
+  const currentVersion = await getDbVersion();
 
-      if (currentMigration) {
-        runMigration(
-          currentMigration.script,
-          currentMigration.message,
-          () => {
-            setDbVersion(v).then(() => {
-              next(migrationsList, v + 1, cb);
-            });
-          },
-        );
-      } else {
-        cb(v - 1);
-      }
-    }
-
-    next(migrations, index + 1, (v) => {
-      resolve(v);
-    });
-  });
-}
-
-export default function (options = {}) {
-  return options.getDbVersion().then((v) => {
-    const migrations = fillMigrations(options.migrations);
-
-    /* eslint-disable no-console */
-    console.log(`    Current DB version: ${v}`);
-
-    return runAllMigrations(migrations, parseInt(v, 10), options.setDbVersion);
-    /* eslint-enable no-console */
-  });
+  return {
+    startVersion,
+    currentVersion,
+    messages: getMessages(migrations, startVersion, currentVersion),
+    error: currentErr,
+  };
 }
