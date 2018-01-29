@@ -56,3 +56,7 @@ List of the classes with time and date
 ## Library
 
 ## Ticher plan
+
+TODO: remove Immutable
+TODO: remove sequelize
+TODO: remove squel

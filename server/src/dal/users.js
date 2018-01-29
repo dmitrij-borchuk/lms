@@ -1,16 +1,16 @@
-import Promise from 'promise';
-
-import { query } from '../database';
-import sqlBuilder from '../services/sqlBuilder';
+import uuidv4 from 'uuid/v4';
+import Boom from 'boom';
 import tokens from './tokens';
+import openDb from '../services/fileDB';
+import { USERS_DB_NAME } from '../constants';
 
-const TABLE_NAME = 'users';
-const TABLE_FIELDS = {
-  ID: 'id',
-  EMAIL: 'email',
-  RESET_TOKEN: 'resetToken',
-  PASSWORD: 'password',
-};
+// const TABLE_NAME = 'users';
+// const TABLE_FIELDS = {
+//   ID: 'id',
+//   EMAIL: 'email',
+//   RESET_TOKEN: 'resetToken',
+//   PASSWORD: 'password',
+// };
 
 function parse(data) {
   const parsedData = Object.assign({}, data);
@@ -31,6 +31,14 @@ function parse(data) {
 //   });
 // }
 
+function getEmailToIdMap(data) {
+  const emailToId = {};
+  Object.values(data).forEach((element) => {
+    emailToId[element.email] = element.id;
+  });
+  return emailToId;
+}
+
 export default {
   // addUser(data) {
   //   return new Promise((resolve, reject) => {
@@ -46,140 +54,66 @@ export default {
   //     });
   //   });
   // },
-  create({ email }) {
-    const request = sqlBuilder.insert()
-      .into(TABLE_NAME)
-      .set(TABLE_FIELDS.EMAIL, email)
-      .toParam();
+  async create({ email }) {
+    const id = uuidv4();
+    const user = {
+      id,
+      email,
+    };
+    const db = await openDb(USERS_DB_NAME);
+    const emailToId = getEmailToIdMap(db.data);
 
-    return query(request);
+    if (!emailToId[email]) {
+      return db.set(id, user);
+    }
+
+    throw Boom.conflict(`User with email ${email} already exists`);
   },
-  getPassword(email) {
-    const request = sqlBuilder.select()
-      .from(TABLE_NAME)
-      .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
-      .toParam();
+  async getPassword(email) {
+    const db = await openDb(USERS_DB_NAME);
+    const emailToId = getEmailToIdMap(db.data);
+    const user = emailToId[email];
 
-    return query(request)
-      .then(res => (!res.length ? null : res[0].password));
+    if (user) {
+      return user.password;
+    }
+
+    throw Boom.notFound('User with this email doesn\'t exist');
   },
-  addResetToken(resetToken, email) {
-    const request = sqlBuilder.update()
-      .table(TABLE_NAME)
-      .set(TABLE_FIELDS.RESET_TOKEN, resetToken)
-      .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
-      .toParam();
+  // addResetToken(resetToken, email) {
+  //   const request = sqlBuilder.update()
+  //     .table(TABLE_NAME)
+  //     .set(TABLE_FIELDS.RESET_TOKEN, resetToken)
+  //     .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
+  //     .toParam();
 
-    return query(request);
+  //   return query(request);
+  // },
+  // newPassword(resetToken, password) {
+  //   const request = sqlBuilder.update()
+  //     .table(TABLE_NAME)
+  //     .set(TABLE_FIELDS.RESET_TOKEN, null)
+  //     .set(TABLE_FIELDS.PASSWORD, password)
+  //     .where(`${TABLE_FIELDS.RESET_TOKEN} = "${resetToken}"`)
+  //     .toParam();
+
+  //   return query(request);
+  // },
+  async getByEmail(email) {
+    const db = await openDb(USERS_DB_NAME);
+    const emailToId = getEmailToIdMap(db.data);
+    const user = emailToId[email];
+
+    if (user) {
+      return parse(user);
+    }
+
+    throw Boom.notFound('User with this email doesn\'t exist');
   },
-  newPassword(resetToken, password) {
-    const request = sqlBuilder.update()
-      .table(TABLE_NAME)
-      .set(TABLE_FIELDS.RESET_TOKEN, null)
-      .set(TABLE_FIELDS.PASSWORD, password)
-      .where(`${TABLE_FIELDS.RESET_TOKEN} = "${resetToken}"`)
-      .toParam();
+  async getUserByToken(token) {
+    const { userId } = tokens.get(token);
+    const usersDb = await openDb(USERS_DB_NAME);
 
-    return query(request);
-  },
-  getByEmail(email) {
-    const request = sqlBuilder.select()
-      .from(TABLE_NAME)
-      .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
-      .toParam();
-
-    return query(request).then(res => (res.length ? parse(res[0]) : null));
-  },
-  getUserByToken(token) {
-    const requestUserIdByToken = sqlBuilder.select()
-      .field(tokens.TABLE_FIELDS.USER)
-      .from(tokens.TABLE_NAME)
-      .where(`${tokens.TABLE_FIELDS.TOKEN} = "${token}"`);
-    const request = sqlBuilder.select()
-      .from(TABLE_NAME)
-      .where(`${TABLE_FIELDS.ID} = ?`, requestUserIdByToken)
-      .toParam();
-
-    return query(request).then(res => (res.length ? parse(res[0]) : null));
+    return usersDb.get(userId);
   },
 };
-
-// export default function (connection) {
-  
-//   const model = connection.define('user', {
-//     id: {
-//       type: Sequelize.INTEGER,
-//       primaryKey: true,
-//       allowNull: false,
-//       autoIncrement: true,
-//     },
-//     email: {
-//       type: Sequelize.STRING,
-//       allowNull: false,
-//       unique: true,
-//     },
-//     password: {
-//       type: Sequelize.STRING,
-//     },
-//     reset_token: {
-//       type: Sequelize.STRING,
-//     },
-//   });
-
-//   return {
-//     model,
-
-//     // update: (setting) => {
-//     //   return model.findOne({
-//     //     where: {
-//     //       name: setting.name
-//     //     }
-//     //   }).then( instance => {
-//     //     if (!instance) {
-//     //       instance = model.build({
-//     //         name: setting.name,
-//     //         value: setting.value
-//     //       });
-//     //     } else {
-//     //       instance.name = setting.name;
-//     //       instance.value = setting.value;
-//     //     }
-
-//     //     return instance.save();
-//     //   });
-//     // },
-
-//     // Migration
-//     createTable: () => {
-//       const queryString = [
-//         'CREATE TABLE users (',
-//         'id int(255) NOT NULL AUTO_INCREMENT primary KEY UNIQUE,',
-//         'email varchar(255) NOT NULL UNIQUE,',
-//         'password varchar(255),',
-//         'updatedAt DATETIME,',
-//         'createdAt DATETIME',
-//         ')',
-//       ].join('');
-
-//       return connection.query(queryString);
-//     },
-//     addColumnResetToken() {
-//       const queryString = [
-//         'ALTER TABLE `users` ',
-//         'ADD `reset_token` VARCHAR(255);',
-//       ].join('');
-
-//       return connection.query(queryString);
-//     },
-//   };
-
-//   function processInstance(instance) {
-//     const plain = instance.get({
-//       plain: true,
-//     });
-
-//     delete plain.password;
-
-//     return plain;
-//   }
-// }

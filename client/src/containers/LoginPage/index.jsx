@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
-import { auth } from '../../actions';
+import { auth as authAction } from '../../actions';
 import AuthForm from '../../components/AuthForm';
 
 export class LoginPage extends React.PureComponent {
@@ -20,7 +20,7 @@ export class LoginPage extends React.PureComponent {
     return (
       <div>
         <AuthForm
-          onSubmit={(data) => this.onSubmit(data)}
+          onSubmit={data => this.onSubmit(data)}
           isFetching={this.props.isFetching}
           error={this.props.error}
           username={this.props.username}
@@ -34,19 +34,31 @@ export class LoginPage extends React.PureComponent {
 LoginPage.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
-  error: PropTypes.object,
+  error: PropTypes.shape({
+    statusCode: PropTypes.number,
+  }),
   username: PropTypes.string,
   password: PropTypes.string,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+LoginPage.defaultProps = {
+  isFetching: false,
+  error: null,
+  username: '',
+  password: '',
 };
 
 const mapStateToProps = ({ auth }) => ({
-  error: auth.get('error'),
+  error: auth.error,
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit(credentials) {
-      return dispatch(auth.login(credentials));
+      return dispatch(authAction.login(credentials));
     },
   };
 }

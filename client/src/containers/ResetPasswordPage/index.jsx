@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Snackbar from 'material-ui/Snackbar';
 import { auth } from '../../actions';
 import ResetPasswordForm from '../../components/ResetPasswordForm';
-import Snackbar from 'material-ui/Snackbar';
 
-export class ResetPasswordPage extends PureComponent {
+class ResetPasswordPage extends PureComponent {
   state = {
     error: null,
     isFetching: false,
@@ -23,13 +23,13 @@ export class ResetPasswordPage extends PureComponent {
         error: null,
         isFetching: false,
         showSnackbar: true,
-      })
+      }),
     ).catch(
-      (err) => this.setState({
+      err => this.setState({
         error: err,
         isFetching: false,
         showSnackbar: false,
-      })
+      }),
     );
   }
 
@@ -43,7 +43,7 @@ export class ResetPasswordPage extends PureComponent {
     return (
       <span>
         <ResetPasswordForm
-          onSubmit={(data) => this.onSubmit(data)}
+          onSubmit={data => this.onSubmit(data)}
           isFetching={isFetching}
           error={error}
         />

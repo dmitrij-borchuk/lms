@@ -1,16 +1,13 @@
-/**
-*
-* SetPasswordForm
-*
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+// import { FormattedMessage } from 'react-intl';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+
+// import messages from './messages';
 
 const Container = styled.div`
   margin: auto;
@@ -42,25 +39,25 @@ const ProgressContainer = styled.div`
   width: 100%;
 `;
 
-
-function getErrorText(error) {
-  const errorMessages = {
-    500: 'messages.serverError.defaultMessage',
-    400: 'messages.incorrectCredentials.defaultMessage',
-  };
-
-  return error ? errorMessages[error.status] : '';
-}
-
-function SetPasswordForm(props) {
-  const {
-    error,
-    onSubmit,
-  } = props;
+function AuthForm(props) {
+  let username = props.username || '';
   let password = props.password || '';
+
+  function usernameChanged(e, value) {
+    username = value;
+  }
 
   function passwordChanged(e, value) {
     password = value;
+  }
+
+  function getErrorText(error) {
+    const errorMessages = {
+      500: 'messages.serverError.defaultMessage',
+      400: 'messages.incorrectCredentials.defaultMessage',
+    };
+
+    return error ? errorMessages[error.statusCode] : '';
   }
 
   return (
@@ -68,7 +65,7 @@ function SetPasswordForm(props) {
       <Paper zDepth={3} >
         <Paper zDepth={1} >
           <Header>
-            Set your password
+            LMS Login
           </Header>
         </Paper>
         <ContentContainer>
@@ -79,17 +76,22 @@ function SetPasswordForm(props) {
           }
           <Content>
             <TextField
+              floatingLabelText="Email"
+              fullWidth
+              onChange={usernameChanged}
+              errorText={getErrorText(props.error)}
+            />
+            <TextField
               type="password"
               floatingLabelText="Password"
               fullWidth
               onChange={passwordChanged}
-              errorText={getErrorText(error)}
             />
             <RaisedButton
               primary
               label="Submit"
               fullWidth
-              onClick={() => { onSubmit(password); }}
+              onClick={() => { props.onSubmit({ username, password }); }}
             />
           </Content>
         </ContentContainer>
@@ -98,11 +100,21 @@ function SetPasswordForm(props) {
   );
 }
 
-SetPasswordForm.propTypes = {
-  password: PropTypes.string,
-  isFetching: PropTypes.bool,
-  isError: PropTypes.bool,
+AuthForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
+  error: PropTypes.shape({
+    statusCode: PropTypes.number,
+  }),
+  username: PropTypes.string,
+  password: PropTypes.string,
 };
 
-export default SetPasswordForm;
+AuthForm.defaultProps = {
+  isFetching: false,
+  error: null,
+  username: '',
+  password: '',
+};
+
+export default AuthForm;

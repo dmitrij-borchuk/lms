@@ -92,7 +92,14 @@ function ResetPasswordForm(props) {
 ResetPasswordForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
-  error: PropTypes.object,
+  error: PropTypes.shape({
+    status: PropTypes.number,
+  }),
+};
+
+ResetPasswordForm.defaultProps = {
+  isFetching: false,
+  error: null,
 };
 
 export default ResetPasswordForm;

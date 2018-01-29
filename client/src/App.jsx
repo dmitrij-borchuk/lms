@@ -8,8 +8,9 @@ import {
 import { connect } from 'react-redux';
 
 import './App.css';
-import { loader } from './actions';
+import { loader as loaderAction } from './actions';
 import Dashboard from './containers/Dashboard';
+import Loader from './components/Loader';
 
 class App extends PureComponent {
   static propTypes = {
@@ -24,9 +25,9 @@ class App extends PureComponent {
     currentUser: null,
   };
 
-  state = {
-    menuIsOpened: false,
-  }
+  // state = {
+  //   menuIsOpened: false,
+  // }
 
   componentWillMount() {
     const {
@@ -36,16 +37,16 @@ class App extends PureComponent {
     getInitialData();
   }
 
-  toggleMenu(state) {
-    this.setState({ menuIsOpened: state });
-  }
+  // toggleMenu(state: bool) {
+  //   this.setState({ menuIsOpened: state });
+  // }
 
   render() {
     const {
       isFetching,
       currentUser,
     } = this.props;
-    let rendering = null;
+    let rendering = <Loader />;
 
     if (!isFetching && !currentUser) {
       rendering = <Redirect to="/login" />;
@@ -86,12 +87,12 @@ class App extends PureComponent {
 }
 
 const mapStateToProps = ({ auth, loader }) => ({
-  currentUser: auth.get('currentUser'),
+  currentUser: auth.currentUser,
   isFetching: loader.isFetching,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getInitialData: () => dispatch(loader.getInitialData()),
+  getInitialData: () => dispatch(loaderAction.getInitialData()),
 });
 
 export default connect(

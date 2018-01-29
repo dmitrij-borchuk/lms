@@ -18,15 +18,15 @@ export function login(params) {
           type: AUTH_LOGIN_FETCHING_FINISH,
           peyload: res.body.token,
         });
-      }
+      },
     ).catch(
       (err) => {
         dispatch({
           type: AUTH_LOGIN_FETCHING_ERROR,
-          payload: err.response.body.message,
+          payload: err.response.body,
         });
         return Promise.reject();
-      }
+      },
     );
   };
 }
@@ -40,13 +40,11 @@ export function resetPassword(data) {
       type: AUTH_RESET_PASSWORD_FETCHING,
     });
 
-    return auth.resetPassword(data)
-    .then((res) => {
-      return dispatch({
+    return auth.resetPassword(data).then(
+      () => dispatch({
         type: AUTH_RESET_PASSWORD_FETCHING_FINISH,
-      });
-    })
-    .catch((err) => {
+      }),
+    ).catch((err) => {
       dispatch({
         type: AUTH_RESET_PASSWORD_FETCHING_ERROR,
         payload: err.response.body.message,
@@ -75,12 +73,10 @@ export function getCurrentUser() {
       type: AUTH_CURRENT_USER_FETCHING,
     });
 
-    return auth.getCurrentUser(Cookies.get('token'))
-    .then(res => dispatch({
+    return auth.getCurrentUser(Cookies.get('token')).then(res => dispatch({
       type: AUTH_CURRENT_USER_FETCHING_FINISH,
       payload: res.body,
-    }))
-    .catch((err) => {
+    })).catch((err) => {
       if (err instanceof Error) {
         throw err;
       } else {
@@ -111,13 +107,11 @@ export function setPassword(data) {
       type: SUBMIT_SET_PASSWORD_FORM,
     });
 
-    return auth.setPassword(data)
-    .then((res) => {
-      return dispatch({
+    return auth.setPassword(data).then(
+      () => dispatch({
         type: SUBMIT_SET_PASSWORD_FORM_SUCCESS,
-      });
-    })
-    .catch((err) => {
+      }),
+    ).catch((err) => {
       dispatch({
         type: SUBMIT_SET_PASSWORD_FORM_FAILURE,
         payload: err.response.body.message,

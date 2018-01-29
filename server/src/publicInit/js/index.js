@@ -15,7 +15,8 @@ $button.on('click', () => {
       email: $email.val(),
     },
   }).then(() => {
-    // TODO
+    // TODO: add message like 'First admin successfully created'
+    $emailTextField.removeClass(invalidMDLClass);
   }).catch((err) => {
     $emailTextFieldError.html(parseErrorText(err.responseJSON.message));
     $emailTextField.addClass(invalidMDLClass);

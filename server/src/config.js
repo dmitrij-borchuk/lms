@@ -12,12 +12,6 @@ const config = {
   server: {
     port: 8080,
   },
-  db: {
-    database: 'lmsdb',
-    host: 'localhost',
-    user: 'root',
-    password: '',
-  },
   mailGun: {
     apiKey: '',
     domain: '',

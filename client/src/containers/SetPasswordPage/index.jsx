@@ -1,14 +1,14 @@
-import React ,{ PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
 import { setPassword } from '../../actions/auth';
 import SetPasswordForm from '../../components/SetPasswordForm';
 import { LOGIN_LINK } from '../../constants';
 
-export class SetPasswordPage extends PureComponent {
+class SetPasswordPage extends PureComponent {
   state = {
     error: null,
     isFetching: false,
@@ -28,12 +28,12 @@ export class SetPasswordPage extends PureComponent {
           isFetching: false,
         });
         history.push(LOGIN_LINK);
-      }
+      },
     ).catch(
-      (err) => this.setState({
+      err => this.setState({
         error: err,
         isFetching: false,
-      })
+      }),
     );
   }
 
@@ -58,7 +58,7 @@ export class SetPasswordPage extends PureComponent {
           ]}
         />
         <SetPasswordForm
-          onSubmit={(password) => this.onSubmit({ password, token })}
+          onSubmit={newPassword => this.onSubmit({ newPassword, token })}
           isFetching={isFetching}
           error={error}
           value={password}
@@ -70,9 +70,24 @@ export class SetPasswordPage extends PureComponent {
 
 SetPasswordPage.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool,
-  error: PropTypes.bool,
+  // isFetching: PropTypes.bool,
+  // error: PropTypes.bool,
   password: PropTypes.string,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }).isRequired,
+};
+
+SetPasswordPage.defaultProps = {
+  // isFetching: false,
+  // error: null,
+  // username: '',
+  password: '',
 };
 
 const mapStateToProps = () => ({});

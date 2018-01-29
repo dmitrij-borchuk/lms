@@ -1,5 +1,5 @@
-// // Needed for redux-saga es6 generator support
-// import 'babel-polyfill';
+// Needed for redux-saga es6 generator support
+import 'babel-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -38,25 +38,25 @@ const store = createStore(
 // store.dispatch(addTranslation(translationsJson));
 
 // const render = (messages) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-        {/* <LanguageProvider messages={messages}> */}
-        <MuiThemeProvider>
-          <div>
-            <Switch>
-              <Route path="/login" component={LoginContainer} />
-              <Route path="/resetPassword" component={ResetPasswordPage} />
-              <Route path="/setPassword/:token" component={SetPasswordPage} />
-              <Route path="/" component={App} />
-            </Switch>
-          </div>
-        </MuiThemeProvider>
-        {/* </LanguageProvider> */}
-      </BrowserRouter>
-    </Provider>
-    , document.getElementById('root')
-  );
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      {/* <LanguageProvider messages={messages}> */}
+      <MuiThemeProvider>
+        <div>
+          <Switch>
+            <Route path="/login" component={LoginContainer} />
+            <Route path="/resetPassword" component={ResetPasswordPage} />
+            <Route path="/setPassword/:token" component={SetPasswordPage} />
+            <Route path="/" component={App} />
+          </Switch>
+        </div>
+      </MuiThemeProvider>
+      {/* </LanguageProvider> */}
+    </BrowserRouter>
+  </Provider>
+  , document.getElementById('root'),
+);
 // };
 
 

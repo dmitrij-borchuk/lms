@@ -6,6 +6,9 @@ import utils from '../utils';
 import mailer from '../services/mailer';
 import templates from '../services/templates';
 import DAL from '../dal';
+import users from '../dal/users';
+import tokens from '../dal/tokens';
+import system from '../dal/system';
 import constants from '../constants';
 
 function verifyPassword(password, encodedPassword) {
@@ -36,45 +39,35 @@ export default {
     );
   },
 
-  login(credentials) {
-    return DAL.users.getPassword(credentials.username).then((password) => {
-      const passwordsMatched = password && verifyPassword(
-        credentials.password,
-        password,
-      );
-      let result;
+  async login(credentials) {
+    const password = await users.getPassword(credentials.username);
+    const passwordsMatched = verifyPassword(
+      credentials.password,
+      password,
+    );
 
-      if (passwordsMatched) {
-        const token = utils.newToken();
-        let user;
-        // TODO: need to chack expired tokens
-        result = DAL.users.getByEmail(credentials.username).then((res) => {
-          user = res;
-          return DAL.tokens.create(user.id, token);
-        }).then(() => {
-          user.token = token;
+    if (passwordsMatched) {
+      const token = utils.newToken();
+      // TODO: need to chack expired tokens
+      const user = await users.getByEmail(credentials.username);
+      await tokens.create(user.id, token);
+      user.token = token;
 
-          return user;
-        });
-      } else {
-        result = Promise.reject(Boom.unauthorized('incorrectCredentials'));
-      }
+      return user;
+    }
 
-      return result;
-    });
+    throw Boom.unauthorized('incorrectCredentials');
   },
 
-  addFirstAdmin(email) {
+  async addFirstAdmin(email) {
     // This method exist only for the initialization phase
-    return DAL.settings.getByName(constants.INITIALIZING_SETTING_KEY).then(({ value }) => {
-      if (value !== constants.INITIALIZED.YES) {
-        return DAL.users.create({ email });
-      }
-      return Promise.reject(Boom.forbidden('Application already initialized'));
-    }).then(() => DAL.settings.update({
-      name: constants.INITIALIZING_SETTING_KEY,
-      value: constants.INITIALIZED.YES,
-    }));
+    const initialized = await system.getByName(constants.INITIALIZING_SETTING_KEY);
+    if (!initialized) {
+      await users.create({ email });
+      await system.update(constants.INITIALIZING_SETTING_KEY, true);
+    } else {
+      throw Boom.forbidden('Application already initialized');
+    }
   },
 
   getUserByToken(token) {

@@ -7,8 +7,8 @@
 import React from 'react';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 
 import AppBar from 'material-ui/AppBar';
 
@@ -21,7 +21,7 @@ function AppHeader() {
     </div>
   );
 }
-      // <FormattedMessage {...messages.header} />
+// <FormattedMessage {...messages.header} />
 
 AppHeader.propTypes = {
 

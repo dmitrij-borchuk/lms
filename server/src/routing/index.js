@@ -4,9 +4,9 @@ import initiating from './initiating';
 export default function (server) {
   server.route({
     method: 'GET',
-    path: '/hello',
+    path: '/ping',
     handler(request, reply) {
-      return reply('hello world');
+      return reply('Hello world!');
     },
   });
 

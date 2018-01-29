@@ -1,22 +1,21 @@
-import { query } from '../database';
-import sqlBuilder from '../services/sqlBuilder';
+import openDb from '../services/fileDB';
+import { TOKENS_DB_NAME } from '../constants';
 
-const TABLE_NAME = 'tokens';
-const TABLE_FIELDS = {
-  USER: 'user',
-  TOKEN: 'token',
-};
+// const TABLE_NAME = 'tokens';
+// const TABLE_FIELDS = {
+//   USER: 'user',
+//   TOKEN: 'token',
+// };
 
 export default {
-  create(userId, token) {
-    const request = sqlBuilder.insert()
-      .into(TABLE_NAME)
-      .set(TABLE_FIELDS.USER, userId)
-      .set(TABLE_FIELDS.TOKEN, token)
-      .toParam();
-
-    return query(request);
+  async create(userId, token) {
+    const db = await openDb(TOKENS_DB_NAME);
+    return db.set(token, userId);
   },
-  TABLE_NAME,
-  TABLE_FIELDS,
+  async get(token) {
+    const db = await openDb(TOKENS_DB_NAME);
+    return db.get(token);
+  },
+  // TABLE_NAME,
+  // TABLE_FIELDS,
 };
