@@ -10,7 +10,7 @@ import { TOKENS_DB_NAME } from '../constants';
 export default {
   async create(userId, token) {
     const db = await openDb(TOKENS_DB_NAME);
-    return db.set(token, userId);
+    return db.set(token, { userId });
   },
   async get(token) {
     const db = await openDb(TOKENS_DB_NAME);

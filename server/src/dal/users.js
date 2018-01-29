@@ -46,7 +46,8 @@ export default {
   //     let request = [
   //       'INSERT INTO ',
   //       '`users` (`id`, `firstName`, `secondName`, `email`, `password`) ',
-  //       'VALUES (NULL, "' + firstName + '","' + secondName + '","' + email + '","' + password + '");'
+  //       'VALUES
+  // (NULL, "' + firstName + '","' + secondName + '","' + email + '","' + password + '");'
   //     ].join('');
 
   //     connection.query(request, (err, response) => {
@@ -71,8 +72,8 @@ export default {
   },
   async getPassword(email) {
     const db = await openDb(USERS_DB_NAME);
-    const emailToId = getEmailToIdMap(db.data);
-    const user = emailToId[email];
+    const users = db.getByKey('email', email);
+    const user = users[0];
 
     if (user) {
       return user.password;
@@ -80,29 +81,39 @@ export default {
 
     throw Boom.notFound('User with this email doesn\'t exist');
   },
-  // addResetToken(resetToken, email) {
-  //   const request = sqlBuilder.update()
-  //     .table(TABLE_NAME)
-  //     .set(TABLE_FIELDS.RESET_TOKEN, resetToken)
-  //     .where(`${TABLE_FIELDS.EMAIL} = "${email}"`)
-  //     .toParam();
-
-  //   return query(request);
-  // },
-  // newPassword(resetToken, password) {
-  //   const request = sqlBuilder.update()
-  //     .table(TABLE_NAME)
-  //     .set(TABLE_FIELDS.RESET_TOKEN, null)
-  //     .set(TABLE_FIELDS.PASSWORD, password)
-  //     .where(`${TABLE_FIELDS.RESET_TOKEN} = "${resetToken}"`)
-  //     .toParam();
-
-  //   return query(request);
-  // },
-  async getByEmail(email) {
+  async addResetToken(resetToken, email) {
     const db = await openDb(USERS_DB_NAME);
     const emailToId = getEmailToIdMap(db.data);
-    const user = emailToId[email];
+    const userId = emailToId[email];
+    const user = db.get(userId);
+
+    if (user) {
+      user.resetToken = resetToken;
+      return db.set(user.id, user);
+    }
+
+    throw Boom.notFound('User with this email doesn\'t exist');
+  },
+  async newPassword(resetToken, password) {
+    const db = await openDb(USERS_DB_NAME);
+    const users = db.getByKey('resetToken', resetToken);
+
+    users.map(element => ({
+      ...element,
+      resetToken: null,
+      password,
+    })).forEach(
+      element => db.set(element.id, element),
+    );
+
+    if (users.length === 0) {
+      throw Boom.notFound();
+    }
+  },
+  async getByEmail(email) {
+    const db = await openDb(USERS_DB_NAME);
+    const users = db.getByKey('email', email);
+    const user = users[0];
 
     if (user) {
       return parse(user);
@@ -111,7 +122,7 @@ export default {
     throw Boom.notFound('User with this email doesn\'t exist');
   },
   async getUserByToken(token) {
-    const { userId } = tokens.get(token);
+    const { userId } = await tokens.get(token);
     const usersDb = await openDb(USERS_DB_NAME);
 
     return usersDb.get(userId);

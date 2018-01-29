@@ -48,6 +48,13 @@ class Db {
 
     return currentPath[key];
   }
+  getByKey(key, value) {
+    return Object.values(this.data).filter(
+      element => key in element,
+    ).filter(
+      element => element[key] === value,
+    );
+  }
 }
 
 export default function open(name) {

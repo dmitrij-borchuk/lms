@@ -53,6 +53,7 @@ export default {
         console.log(` text: ${data.text}`);
         console.log('+----------------');
         /* eslint-enable no-console */
+        resolve();
       }
     });
   },

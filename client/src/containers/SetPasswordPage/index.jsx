@@ -58,7 +58,7 @@ class SetPasswordPage extends PureComponent {
           ]}
         />
         <SetPasswordForm
-          onSubmit={newPassword => this.onSubmit({ newPassword, token })}
+          onSubmit={newPassword => this.onSubmit({ password: newPassword, token })}
           isFetching={isFetching}
           error={error}
           value={password}

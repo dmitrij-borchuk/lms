@@ -1,11 +1,9 @@
 import passwordHash from 'password-hash';
-import Promise from 'promise';
 import Boom from 'boom';
 
 import utils from '../utils';
 import mailer from '../services/mailer';
 import templates from '../services/templates';
-import DAL from '../dal';
 import users from '../dal/users';
 import tokens from '../dal/tokens';
 import system from '../dal/system';
@@ -16,27 +14,23 @@ function verifyPassword(password, encodedPassword) {
 }
 
 export default {
-  resetPassword: (email, serverUrl) => {
+  async resetPassword(email, serverUrl) {
     const resetToken = utils.newToken();
-    const sendMail = template => mailer.send({
+    await users.addResetToken(resetToken, email);
+    const template = await templates.setPassword(`${serverUrl}/setPassword/${resetToken}`);
+
+    return mailer.send({
       to: email,
       subject: 'Set your password',
       text: template.text,
       html: template.html,
     });
-    const getTemplate = () => templates.setPassword(`${serverUrl}/setPassword/${resetToken}`);
-
-    return DAL.users.addResetToken(resetToken, email)
-      .then(getTemplate)
-      .then(sendMail);
   },
 
-  setPassword: (token, password) => {
+  async setPassword(token, password) {
     const encodedPassword = passwordHash.generate(password);
 
-    return DAL.users.newPassword(token, encodedPassword).then(
-      res => (res.affectedRows === 0 ? Promise.reject(Boom.badRequest()) : res),
-    );
+    return users.newPassword(token, encodedPassword);
   },
 
   async login(credentials) {
@@ -70,8 +64,8 @@ export default {
     }
   },
 
-  getUserByToken(token) {
-    return DAL.users.getUserByToken(token);
+  async getUserByToken(token) {
+    return users.getUserByToken(token);
 
     // .then((roles) => {
     //   let rolesPromisies = roles.map(function(role) {
