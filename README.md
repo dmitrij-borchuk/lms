@@ -58,5 +58,5 @@ List of the classes with time and date
 ## Ticher plan
 
 TODO: remove Immutable
-TODO: remove sequelize
-TODO: remove squel
+TODO: Flowtype
+TODO: unit test

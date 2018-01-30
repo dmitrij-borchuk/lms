@@ -4,25 +4,29 @@ import AuthHeader from 'hapi-auth-header';
 import usersController from './controllers/usersCtrl';
 import constants from './constants';
 
-export default function (server) {
-  return new Promise((resolve, reject) => {
-    server.register(AuthHeader, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        server.auth.strategy('simple', 'auth-header', {
-          validateFunc(tokens, callback) {
-            const tokenName = constants.AUTH_TOKEN_NAME;
+const register = (server, plugin) => new Promise(
+  (resolve, reject) => server.register(
+    plugin,
+    err => (!err ? resolve() : reject(err))
+  ),
+);
 
-            usersController.getUserByToken(tokens[tokenName]).then(
-              user => callback(null, true, user),
-            ).catch(
-              () => callback(null, false, null),
-            );
-          },
-        });
-        resolve();
-      }
-    });
-  });
+export default async function (server) {
+  await register(server, AuthHeader);
+  server.auth.strategy(
+    'simple',
+    'auth-header',
+    {
+      async validateFunc(tokens, callback) {
+        const tokenName = constants.AUTH_TOKEN_NAME;
+
+        try {
+          const user = await usersController.getUserByToken(tokens[tokenName]);
+          callback(null, true, user);
+        } catch (error) {
+          callback(null, false, null);
+        }
+      },
+    },
+  );
 }
