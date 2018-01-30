@@ -7,7 +7,7 @@ import constants from './constants';
 const register = (server, plugin) => new Promise(
   (resolve, reject) => server.register(
     plugin,
-    err => (!err ? resolve() : reject(err))
+    err => (!err ? resolve() : reject(err)),
   ),
 );
 

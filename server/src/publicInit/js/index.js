@@ -5,6 +5,7 @@ const $emailTextFieldError = $('#emailTextField .mdl-textfield__error');
 const invalidMDLClass = 'is-invalid';
 
 function parseErrorText(txt) {
+  // eslint-disable-next-line no-useless-escape
   return txt.replace(/^[^\[]*\[/, '').replace(/\][^\]]*$/, '');
 }
 
