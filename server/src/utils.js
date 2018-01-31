@@ -1,4 +1,5 @@
 import RandToken from 'rand-token';
+import rimraf from 'rimraf';
 
 export default {
   newToken() {
@@ -9,5 +10,10 @@ export default {
     const serverUrl = `${server.info.protocol}://${request.info.host}`;
 
     return serverUrl;
+  },
+  removeFolder(path) {
+    return new Promise((resolve, reject) => {
+      rimraf(path, err => (err ? reject() : resolve() ));
+    });
   },
 };

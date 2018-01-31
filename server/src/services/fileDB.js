@@ -13,6 +13,17 @@ function writeFile(path, data) {
     });
   });
 }
+function readFile(path) {
+  return new Promise((resolve, reject) => {
+    jsonfile.readFile(path, (err, obj) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(obj);
+      }
+    });
+  });
+}
 
 class Db {
   constructor(path, data) {
@@ -40,10 +51,11 @@ class Db {
     let currentPath = this.data;
 
     pathParts.forEach((element) => {
-      if (!(element in currentPath)) {
-        currentPath[element] = {};
+      if (currentPath[element]) {
+        currentPath = currentPath[element];
+      } else {
+        currentPath = {};
       }
-      currentPath = currentPath[element];
     });
 
     return currentPath[key];
@@ -57,25 +69,18 @@ class Db {
   }
 }
 
-export default function open(name) {
-  return new Promise((resolve, reject) => {
-    const path = `${DB_PATH}/${name}`;
+export default async function open(name) {
+  const path = `${DB_PATH}/${name}`;
 
-    if (!fs.existsSync(DB_PATH)) {
-      fs.mkdirSync(DB_PATH);
-    }
-    jsonfile.readFile(path, (readErr, obj) => {
-      if (!readErr) {
-        resolve(new Db(path, obj));
-      } else {
-        jsonfile.writeFile(path, {}, (writeErr) => {
-          if (writeErr) {
-            reject(writeErr);
-          } else {
-            resolve(new Db(path, {}));
-          }
-        });
-      }
-    });
-  });
+  if (!fs.existsSync(DB_PATH)) {
+    fs.mkdirSync(DB_PATH);
+  }
+  try {
+    const obj = await readFile(path);
+    return new Db(path, obj);
+  } catch (error) {
+    const defaultData = {};
+    await writeFile(path, defaultData);
+    return new Db(path, defaultData);
+  }
 }
