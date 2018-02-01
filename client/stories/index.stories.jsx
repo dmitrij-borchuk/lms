@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import AppHeader from '../src/components/AppHeader';
-import AuthForm from '../src/components/AuthForm/container';
+import AuthForm from '../src/components/AuthForm';
 import Loader from '../src/components/Loader';
 import ResetPasswordForm from '../src/components/ResetPasswordForm';
 import SetPasswordForm from '../src/components/SetPasswordForm';
@@ -24,20 +24,25 @@ storiesOf('AppHeader', module)
 
 storiesOf('AuthForm', module)
   .addDecorator(decorator)
-  .add('default', () => (
+  .add('Default', () => (
     <AuthForm onSubmit={action('Submited')} />
   ))
-  .add('fetching (broaken)', () => (
+  .add('With data', () => (
+    <AuthForm
+      username="user@gmail.com"
+      password="mySuperSecretPassword"
+      onSubmit={action('Submited')}
+    />
+  ))
+  .add('Fetching', () => (
     <AuthForm
       isFetching
       onSubmit={action('Submited')}
     />
   ))
-  .add('with error (without messages)', () => (
+  .add('With error (without messages)', () => (
     <AuthForm
-      error1={{
-        statusCode: 400,
-      }}
+      error="Login failed"
       onSubmit={action('Submited')}
     />
   ));

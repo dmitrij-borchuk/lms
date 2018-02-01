@@ -31,31 +31,16 @@ const ContentContainer = styled.div`
   position: relative;
 `;
 
-
 function AuthForm(props) {
   const {
     isFetching,
     onSubmit,
+    username,
+    password,
+    usernameChanged,
+    passwordChanged,
+    error,
   } = props;
-  let username = props.username || '';
-  let password = props.password || '';
-
-  function usernameChanged(e, value) {
-    username = value;
-  }
-
-  function passwordChanged(e, value) {
-    password = value;
-  }
-
-  function getErrorText(error) {
-    const errorMessages = {
-      500: 'messages.serverError.defaultMessage',
-      400: 'messages.incorrectCredentials.defaultMessage',
-    };
-
-    return error ? errorMessages[error.statusCode] : '';
-  }
 
   return (
     <Container>
@@ -71,19 +56,24 @@ function AuthForm(props) {
               floatingLabelText="Email"
               fullWidth
               onChange={usernameChanged}
-              errorText={getErrorText(props.error)}
+              errorText={error}
+              value={username}
+              disabled={isFetching}
             />
             <TextField
               type="password"
               floatingLabelText="Password"
               fullWidth
               onChange={passwordChanged}
+              value={password}
+              disabled={isFetching}
             />
             <RaisedButton
               primary
               label="Submit"
               fullWidth
               onClick={() => { onSubmit({ username, password }); }}
+              disabled={isFetching}
             />
           </Content>
 
@@ -99,11 +89,11 @@ function AuthForm(props) {
 AuthForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
-  error: PropTypes.shape({
-    statusCode: PropTypes.number,
-  }),
+  error: PropTypes.string,
   username: PropTypes.string,
   password: PropTypes.string,
+  usernameChanged: PropTypes.func,
+  passwordChanged: PropTypes.func,
 };
 
 AuthForm.defaultProps = {
@@ -111,6 +101,8 @@ AuthForm.defaultProps = {
   error: null,
   username: '',
   password: '',
+  usernameChanged: () => {},
+  passwordChanged: () => {},
 };
 
 export default AuthForm;
