@@ -5,6 +5,11 @@ const defaultState = {
   currentUserInfoFatching: true,
   currentUser: null,
   error: null,
+
+  authForm: {
+    username: '',
+    password: '',
+  },
 };
 
 export default function authReducers(state = defaultState, action) {
@@ -47,6 +52,13 @@ export default function authReducers(state = defaultState, action) {
         ...state,
         currentUserInfoFatching: false,
         currentUser: null,
+      };
+
+    // Login form
+    case auth.LOGIN_FORM_SET_CRENTIALS:
+      return {
+        ...state,
+        authForm: action.payload,
       };
 
     default:

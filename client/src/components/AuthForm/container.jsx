@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import AuthForm from './index';
+import { setCredentials } from '../../actions/auth';
 
 function getErrorText(error) {
   const errorMessages = {
@@ -13,31 +15,17 @@ function getErrorText(error) {
 }
 
 class AuthFormContainer extends PureComponent {
-  state = {
-    username: '',
-    password: '',
-  };
-
-  componentWillReceiveProps(nextProps) {
-    const newStateProps = {};
-    if (this.props.username !== nextProps.username) {
-      newStateProps.username = nextProps.username;
-    }
-    if (this.props.password !== nextProps.password) {
-      newStateProps.password = nextProps.password;
-    }
-    this.setState(newStateProps);
-  }
-
-  usernameChanged(e, value) {
-    this.setState({
+  usernameChanged = (e, value) => {
+    this.props.setCredentials({
       username: value,
+      password: this.props.password,
     });
   }
 
-  passwordChanged(e, value) {
-    this.setState({
+  passwordChanged = (e, value) => {
+    this.props.setCredentials({
       password: value,
+      username: this.props.username,
     });
   }
 
@@ -46,11 +34,10 @@ class AuthFormContainer extends PureComponent {
       isFetching,
       onSubmit,
       error,
-    } = this.props;
-    const {
       username,
       password,
-    } = this.state;
+    } = this.props;
+    console.log('=-= username', username);
 
     return (
       <AuthForm
@@ -68,6 +55,7 @@ class AuthFormContainer extends PureComponent {
 
 AuthFormContainer.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  setCredentials: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
   error: PropTypes.shape({
     statusCode: PropTypes.number,
@@ -83,4 +71,16 @@ AuthFormContainer.defaultProps = {
   password: '',
 };
 
-export default AuthFormContainer;
+const mapStateToProps = ({ auth }) => ({
+  username: auth.authForm.username,
+  password: auth.authForm.password,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCredentials: data => dispatch(setCredentials(data)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AuthFormContainer);

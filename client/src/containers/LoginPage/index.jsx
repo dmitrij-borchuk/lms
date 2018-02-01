@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { auth as authAction } from '../../actions';
-import AuthForm from '../../components/AuthForm';
+import AuthForm from '../../components/AuthForm/container';
 
 export class LoginPage extends React.PureComponent {
   onSubmit(data) {
@@ -23,8 +23,6 @@ export class LoginPage extends React.PureComponent {
           onSubmit={data => this.onSubmit(data)}
           isFetching={this.props.isFetching}
           error={this.props.error}
-          username={this.props.username}
-          password={this.props.password}
         />
       </div>
     );
@@ -37,8 +35,6 @@ LoginPage.propTypes = {
   error: PropTypes.shape({
     statusCode: PropTypes.number,
   }),
-  username: PropTypes.string,
-  password: PropTypes.string,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
@@ -47,8 +43,6 @@ LoginPage.propTypes = {
 LoginPage.defaultProps = {
   isFetching: false,
   error: null,
-  username: '',
-  password: '',
 };
 
 const mapStateToProps = ({ auth }) => ({

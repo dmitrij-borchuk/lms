@@ -100,7 +100,6 @@ export function setCurrentUser(user) {
 export const SUBMIT_SET_PASSWORD_FORM = 'app/SetPasswordPage/SUBMIT_SET_PASSWORD_FORM';
 export const SUBMIT_SET_PASSWORD_FORM_SUCCESS = 'app/SetPasswordPage/SUBMIT_SET_PASSWORD_FORM_SUCCESS';
 export const SUBMIT_SET_PASSWORD_FORM_FAILURE = 'app/SetPasswordPage/SUBMIT_SET_PASSWORD_FORM_FAILURE';
-
 export function setPassword(data) {
   return (dispatch) => {
     dispatch({
@@ -117,6 +116,16 @@ export function setPassword(data) {
         payload: err.response.body.message,
       });
       return Promise.reject(err);
+    });
+  };
+}
+
+export const LOGIN_FORM_SET_CRENTIALS = 'app/LoginForm/LOGIN_FORM_SET_CRENTIALS';
+export function setCredentials(data) {
+  return (dispatch) => {
+    dispatch({
+      type: LOGIN_FORM_SET_CRENTIALS,
+      payload: data,
     });
   };
 }
