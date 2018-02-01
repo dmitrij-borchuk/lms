@@ -5,7 +5,9 @@ import styled from 'styled-components';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
+
+import Loader from '../Loader';
+
 
 // import messages from './messages';
 
@@ -29,17 +31,12 @@ const ContentContainer = styled.div`
   position: relative;
 `;
 
-const ProgressContainer = styled.div`
-  background-color: rgba(0,0,0,0.1);
-  position: absolute;
-  height: 100%;
-  padding-top: 75px;
-  text-align: center;
-  z-index: 2;
-  width: 100%;
-`;
 
 function AuthForm(props) {
+  const {
+    isFetching,
+    onSubmit,
+  } = props;
   let username = props.username || '';
   let password = props.password || '';
 
@@ -69,11 +66,6 @@ function AuthForm(props) {
           </Header>
         </Paper>
         <ContentContainer>
-          {props.isFetching &&
-            <ProgressContainer>
-              <CircularProgress />
-            </ProgressContainer>
-          }
           <Content>
             <TextField
               floatingLabelText="Email"
@@ -91,9 +83,13 @@ function AuthForm(props) {
               primary
               label="Submit"
               fullWidth
-              onClick={() => { props.onSubmit({ username, password }); }}
+              onClick={() => { onSubmit({ username, password }); }}
             />
           </Content>
+
+          {isFetching &&
+            <Loader />
+          }
         </ContentContainer>
       </Paper>
     </Container>

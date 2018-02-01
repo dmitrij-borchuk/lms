@@ -49,7 +49,7 @@ function getErrorText(error) {
     400: 'messages.incorrectCredentials.defaultMessage',
   };
 
-  return error ? errorMessages[error.status] : '';
+  return error ? errorMessages[error.statusCode] : '';
 }
 
 function SetPasswordForm(props) {
@@ -100,7 +100,7 @@ function SetPasswordForm(props) {
 
 SetPasswordForm.propTypes = {
   error: PropTypes.shape({
-    status: PropTypes.number,
+    statusCode: PropTypes.number,
   }),
   password: PropTypes.string,
   isFetching: PropTypes.bool,

@@ -51,7 +51,7 @@ function ResetPasswordForm(props) {
       400: 'messages.incorrectCredentials.defaultMessage',
     };
 
-    return error ? errorMessages[error.status] : '';
+    return error ? errorMessages[error.statusCode] : '';
   }
 
   return (
@@ -93,7 +93,7 @@ ResetPasswordForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isFetching: PropTypes.bool,
   error: PropTypes.shape({
-    status: PropTypes.number,
+    statusCode: PropTypes.number,
   }),
 };
 

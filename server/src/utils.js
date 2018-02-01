@@ -13,7 +13,7 @@ export default {
   },
   removeFolder(path) {
     return new Promise((resolve, reject) => {
-      rimraf(path, err => (err ? reject() : resolve() ));
+      rimraf(path, err => (err ? reject() : resolve()));
     });
   },
 };

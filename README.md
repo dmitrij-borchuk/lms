@@ -12,6 +12,11 @@ Server:
 ```
 yarn dev
 ```
+React Storybook:
+```
+cd client
+yarn run storybook
+```
 
 # Road map
 
