@@ -1,4 +1,5 @@
 import auth from './auth';
+import schedule from './schedule';
 import initiating from './initiating';
 
 export default function (server) {
@@ -11,5 +12,7 @@ export default function (server) {
   });
 
   auth(server);
+  schedule(server);
+
   initiating(server);
 }

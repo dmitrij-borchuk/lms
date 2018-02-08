@@ -8,6 +8,7 @@ const constants = {
   SYSTEM_DB_NAME: 'system',
   TOKENS_DB_NAME: 'tokens',
   SETTINGS_DB_NAME: 'settings',
+  SCHEDULE_DB_NAME: 'schedule',
   DB_PATH: './db',
 };
 
@@ -17,5 +18,6 @@ export const {
   USERS_DB_NAME,
   TOKENS_DB_NAME,
   SETTINGS_DB_NAME,
+  SCHEDULE_DB_NAME,
   DB_PATH,
 } = constants;

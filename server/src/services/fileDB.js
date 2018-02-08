@@ -35,6 +35,10 @@ class Db {
     const key = pathParts.pop();
     let currentPath = this.data;
 
+    if (!path.length) {
+      throw new Error('Path is required and shouldn\'t be ampty');
+    }
+
     pathParts.forEach((element) => {
       if (!(element in currentPath)) {
         currentPath[element] = {};
