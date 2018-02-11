@@ -1,20 +1,15 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import 'modern-normalize/modern-normalize.css';
 
+import decorator from './utils/decorators';
 import AppHeader from '../src/components/AppHeader';
 import AuthForm from '../src/components/AuthForm';
 import Loader from '../src/components/Loader';
 import ResetPasswordForm from '../src/components/ResetPasswordForm';
 import SetPasswordForm from '../src/components/SetPasswordForm';
-
-const muiThemeDecorator = child => (
-  <MuiThemeProvider>
-    {child}
-  </MuiThemeProvider>
-);
-const decorator = story => muiThemeDecorator(story());
+import calendar from './calendar';
 
 storiesOf('AppHeader', module)
   .addDecorator(decorator)
@@ -105,3 +100,5 @@ storiesOf('SetPasswordForm', module)
       onSubmit={action('Submited')}
     />
   ));
+
+calendar();

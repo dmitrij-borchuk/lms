@@ -37,7 +37,6 @@ class AuthFormContainer extends PureComponent {
       username,
       password,
     } = this.props;
-    console.log('=-= username', username);
 
     return (
       <AuthForm

@@ -7,6 +7,7 @@
 // to "React Create App". This only has babel loader to load JavaScript.
 
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   plugins: [

@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import 'modern-normalize/modern-normalize.css';
 // import {
 //   setLanguages,
 //   addTranslation,
