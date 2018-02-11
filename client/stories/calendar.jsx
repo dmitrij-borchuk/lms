@@ -1,6 +1,5 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 
 import decorator from './utils/decorators';
 import Calendar from '../src/components/Calendar';
@@ -44,7 +43,7 @@ export default () => {
   storiesOf('Calendar', module)
     .addDecorator(decorator)
     .add('default', () => (
-      <Calendar onSubmit={action('Submited')} />
+      <Calendar />
     ))
     .add('with event', () => (
       <Calendar
