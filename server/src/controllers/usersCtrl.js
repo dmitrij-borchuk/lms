@@ -45,9 +45,8 @@ export default {
       // TODO: need to chack expired tokens
       const user = await users.getByEmail(credentials.username);
       await tokens.create(user.id, token);
-      user.token = token;
 
-      return user;
+      return token;
     }
 
     throw Boom.unauthorized('incorrectCredentials');

@@ -90,14 +90,14 @@ const timeShape = {
   hours: PropTypes.number.isRequired,
   minutes: PropTypes.number.isRequired,
 };
-
+const eventShape = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  timeFrom: PropTypes.shape(timeShape).isRequired,
+  timeTo: PropTypes.shape(timeShape).isRequired,
+};
 Calendar.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    timeFrom: PropTypes.shape(timeShape).isRequired,
-    timeTo: PropTypes.shape(timeShape).isRequired,
-  })),
+  events: PropTypes.objectOf(PropTypes.shape(eventShape)),
 };
 
 Calendar.defaultProps = {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import AppHeader from '../../components/AppHeader';
-import Calendar from '../../components/Calendar';
+import Calendar from '../../components/Calendar/container';
 import Widget from '../../components/Widget';
 
 export default function Dashboard() {

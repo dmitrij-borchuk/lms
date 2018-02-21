@@ -1,15 +1,15 @@
 import Boom from 'boom';
 import Joi from 'joi';
 
-import scheduleCtrl from '../controllers/scheduleCtrl';
+import eventsCtrl from '../controllers/eventsCtrl';
 
 export default function (server) {
   server.route({
     method: 'POST',
-    path: '/api/schedule',
+    path: '/api/events',
     config: {
-      description: 'Returns schedule',
-      notes: 'Returns schedule',
+      description: 'Returns events',
+      notes: 'Returns events',
       tags: ['api'],
       auth: 'simple',
       validate: {
@@ -20,7 +20,7 @@ export default function (server) {
       },
       async handler(request, reply) {
         try {
-          const res = await scheduleCtrl.create(request.payload);
+          const res = await eventsCtrl.create(request.payload);
           reply(res);
         } catch (error) {
           if (error.isBoom) {
@@ -35,10 +35,10 @@ export default function (server) {
 
   server.route({
     method: 'GET',
-    path: '/api/schedule/{id}',
+    path: '/api/events/{id}',
     config: {
-      description: 'Returns schedule by id',
-      notes: 'Returns schedule',
+      description: 'Returns events by id',
+      notes: 'Returns events',
       tags: ['api'],
       auth: 'simple',
       validate: {
@@ -48,7 +48,7 @@ export default function (server) {
       },
       async handler(request, reply) {
         try {
-          const res = await scheduleCtrl.get(request.params.id);
+          const res = await eventsCtrl.get(request.params.id);
           reply(res);
         } catch (error) {
           if (error.isBoom) {
@@ -63,15 +63,15 @@ export default function (server) {
 
   server.route({
     method: 'GET',
-    path: '/api/schedule',
+    path: '/api/events',
     config: {
-      description: 'Returns all schedule items',
-      notes: 'Returns schedule',
+      description: 'Returns all events items',
+      notes: 'Returns events',
       tags: ['api'],
       auth: 'simple',
       async handler(request, reply) {
         try {
-          const res = await scheduleCtrl.getAll();
+          const res = await eventsCtrl.getAll();
           reply(res);
         } catch (error) {
           if (error.isBoom) {

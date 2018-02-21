@@ -1,43 +1,28 @@
-import uuidv4 from 'uuid/v4';
 import Boom from 'boom';
+import Sequelize from 'sequelize';
 import tokens from './tokens';
-import openDb from '../services/fileDB';
-import { USERS_DB_NAME } from '../constants';
+import sequelize from '../services/sequelize';
 
-// const TABLE_NAME = 'users';
-// const TABLE_FIELDS = {
-//   ID: 'id',
-//   EMAIL: 'email',
-//   RESET_TOKEN: 'resetToken',
-//   PASSWORD: 'password',
-// };
+export const Model = sequelize.define('user', {
+  email: {
+    type: Sequelize.STRING,
+  },
+  password: {
+    type: Sequelize.STRING,
+  },
+  resetToken: {
+    type: Sequelize.STRING,
+  },
+});
 
-function parse(data) {
-  const parsedData = Object.assign({}, data);
-
-  delete parsedData.confirmToken;
-  delete parsedData.password;
-  delete parsedData.permanent;
-  delete parsedData.resetToken;
-
-  return parsedData;
-}
-
-// function query(request) {
-//   return new Promise((resolve, reject) => {
-//     connection.query(request, (err, response) => {
-//       err ? reject(err) : resolve(response);
-//     });
-//   });
-// }
-
-function getEmailToIdMap(data) {
-  const emailToId = {};
-  Object.values(data).forEach((element) => {
-    emailToId[element.email] = element.id;
-  });
-  return emailToId;
-}
+const getOptions = {
+  attributes: {
+    exclude: [
+      'password',
+      'resetToken',
+    ],
+  },
+};
 
 export default {
   // addUser(data) {
@@ -56,75 +41,71 @@ export default {
   //   });
   // },
   async create({ email }) {
-    const id = uuidv4();
-    const user = {
-      id,
+    const instance = Model.build({
       email,
-    };
-    const db = await openDb(USERS_DB_NAME);
-    const emailToId = getEmailToIdMap(db.data);
-
-    if (!emailToId[email]) {
-      return db.set(id, user);
-    }
-
-    throw Boom.conflict(`User with email ${email} already exists`);
+    });
+    return instance.save();
+  },
+  async get() {
+    return Model.findAll(getOptions);
+  },
+  async getById(id) {
+    return Model.findOne({
+      where: {
+        id,
+      },
+      attributes: getOptions.attributes,
+    });
   },
   async getPassword(email) {
-    const db = await openDb(USERS_DB_NAME);
-    const users = db.getByKey('email', email);
-    const user = users[0];
+    const instance = await Model.findOne({
+      where: {
+        email,
+      },
+    });
 
-    if (user) {
-      return user.password;
-    }
-
-    throw Boom.notFound('User with this email doesn\'t exist');
+    return instance.password;
   },
   async addResetToken(resetToken, email) {
-    const db = await openDb(USERS_DB_NAME);
-    const emailToId = getEmailToIdMap(db.data);
-    const userId = emailToId[email];
-    const user = db.get(userId);
-
-    if (user) {
-      user.resetToken = resetToken;
-      return db.set(user.id, user);
+    const instance = await Model.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!instance) {
+      throw Boom.notFound('User with this email doesn\'t exist');
     }
-
-    throw Boom.notFound('User with this email doesn\'t exist');
+    instance.resetToken = resetToken;
+    instance.save();
   },
   async newPassword(resetToken, password) {
-    const db = await openDb(USERS_DB_NAME);
-    const users = db.getByKey('resetToken', resetToken);
-
-    users.map(element => ({
-      ...element,
-      resetToken: null,
-      password,
-    })).forEach(
-      element => db.set(element.id, element),
-    );
-
-    if (users.length === 0) {
-      throw Boom.notFound();
+    const instance = await Model.findOne({
+      where: {
+        resetToken,
+      },
+    });
+    if (!instance) {
+      throw Boom.notFound('User with this email doesn\'t exist');
     }
+    instance.password = password;
+    instance.resetToken = null;
+    instance.save();
   },
   async getByEmail(email) {
-    const db = await openDb(USERS_DB_NAME);
-    const users = db.getByKey('email', email);
-    const user = users[0];
-
-    if (user) {
-      return parse(user);
+    const instance = await Model.findOne({
+      where: {
+        email,
+      },
+      attributes: getOptions.attributes,
+    });
+    if (!instance) {
+      throw Boom.notFound('User with this email doesn\'t exist');
     }
-
-    throw Boom.notFound('User with this email doesn\'t exist');
+    return instance;
   },
   async getUserByToken(token) {
-    const { userId } = await tokens.get(token);
-    const usersDb = await openDb(USERS_DB_NAME);
+    const { user } = await tokens.get(token);
 
-    return usersDb.get(userId);
+    return this.getById(user);
   },
 };

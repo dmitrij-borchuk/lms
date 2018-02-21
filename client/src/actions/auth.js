@@ -13,10 +13,10 @@ export function login(params) {
 
     return auth.login(params).then(
       (res) => {
-        Cookies.set('token', res.body.token);
+        Cookies.set('token', res.text);
         return dispatch({
           type: AUTH_LOGIN_FETCHING_FINISH,
-          peyload: res.body.token,
+          payload: res.text,
         });
       },
     ).catch(
@@ -28,6 +28,16 @@ export function login(params) {
         return Promise.reject();
       },
     );
+  };
+}
+
+export const LOGIN_FORM_SET_CRENTIALS = 'app/LoginForm/LOGIN_FORM_SET_CRENTIALS';
+export function setCredentials(data) {
+  return (dispatch) => {
+    dispatch({
+      type: LOGIN_FORM_SET_CRENTIALS,
+      payload: data,
+    });
   };
 }
 
@@ -50,6 +60,16 @@ export function resetPassword(data) {
         payload: err.response.body.message,
       });
       return Promise.reject(err);
+    });
+  };
+}
+
+export const RESET_PASSWORD_SET_FORM = 'RESET_PASSWORD_SET_FORM';
+export function resetPasswordSetForm(data) {
+  return (dispatch) => {
+    dispatch({
+      type: RESET_PASSWORD_SET_FORM,
+      payload: data,
     });
   };
 }
@@ -120,11 +140,11 @@ export function setPassword(data) {
   };
 }
 
-export const LOGIN_FORM_SET_CRENTIALS = 'app/LoginForm/LOGIN_FORM_SET_CRENTIALS';
-export function setCredentials(data) {
+export const SET_PASSWORD_SET_FORM = 'SET_PASSWORD_SET_FORM';
+export function setPasswordSetForm(data) {
   return (dispatch) => {
     dispatch({
-      type: LOGIN_FORM_SET_CRENTIALS,
+      type: SET_PASSWORD_SET_FORM,
       payload: data,
     });
   };

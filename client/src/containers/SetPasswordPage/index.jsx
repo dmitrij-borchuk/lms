@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 
 import { setPassword } from '../../actions/auth';
-import SetPasswordForm from '../../components/SetPasswordForm';
+import SetPasswordForm from '../../components/SetPasswordForm/container';
 import { LOGIN_LINK } from '../../constants';
 
 class SetPasswordPage extends PureComponent {

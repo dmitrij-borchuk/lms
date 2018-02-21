@@ -22,7 +22,9 @@ export default async function (server) {
 
         try {
           const user = await usersController.getUserByToken(tokens[tokenName]);
-          callback(null, true, user);
+          callback(null, true, user.get({
+            plain: true,
+          }));
         } catch (error) {
           callback(null, false, null);
         }

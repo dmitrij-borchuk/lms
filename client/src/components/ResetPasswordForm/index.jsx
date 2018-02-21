@@ -39,20 +39,13 @@ const ProgressContainer = styled.div`
 `;
 
 function ResetPasswordForm(props) {
-  let email = '';
-
-  function emailChanged(e, value) {
-    email = value;
-  }
-
-  function getErrorText(error) {
-    const errorMessages = {
-      500: 'messages.serverError.defaultMessage',
-      400: 'messages.incorrectCredentials.defaultMessage',
-    };
-
-    return error ? errorMessages[error.statusCode] : '';
-  }
+  const {
+    isFetching,
+    onSubmit,
+    email,
+    emailChanged,
+    error,
+  } = props;
 
   return (
     <Container>
@@ -63,7 +56,7 @@ function ResetPasswordForm(props) {
           </Header>
         </Paper>
         <ContentContainer>
-          {props.isFetching &&
+          {isFetching &&
             <ProgressContainer>
               <CircularProgress />
             </ProgressContainer>
@@ -72,15 +65,16 @@ function ResetPasswordForm(props) {
             <TextField
               name="email"
               floatingLabelText="Email"
+              value={email}
               fullWidth
               onChange={emailChanged}
-              errorText={getErrorText(props.error)}
+              errorText={error}
             />
             <RaisedButton
               primary
               label="Submit"
               fullWidth
-              onClick={() => { props.onSubmit({ email }); }}
+              onClick={() => { onSubmit({ email }); }}
             />
           </Content>
         </ContentContainer>
@@ -90,16 +84,19 @@ function ResetPasswordForm(props) {
 }
 
 ResetPasswordForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   isFetching: PropTypes.bool,
-  error: PropTypes.shape({
-    statusCode: PropTypes.number,
-  }),
+  error: PropTypes.string,
+  email: PropTypes.string,
+  emailChanged: PropTypes.func,
 };
 
 ResetPasswordForm.defaultProps = {
   isFetching: false,
   error: null,
+  email: '',
+  emailChanged: () => {},
+  onSubmit: () => {},
 };
 
 export default ResetPasswordForm;

@@ -1,21 +1,32 @@
-import openDb from '../services/fileDB';
-import { TOKENS_DB_NAME } from '../constants';
+import Sequelize from 'sequelize';
+import sequelize from '../services/sequelize';
 
-// const TABLE_NAME = 'tokens';
-// const TABLE_FIELDS = {
-//   USER: 'user',
-//   TOKEN: 'token',
-// };
+export const Model = sequelize.define('token', {
+  user: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'users',
+      key: 'id',
+    },
+  },
+  token: {
+    type: Sequelize.STRING,
+  },
+});
 
 export default {
   async create(userId, token) {
-    const db = await openDb(TOKENS_DB_NAME);
-    return db.set(token, { userId });
+    const instance = Model.build({
+      user: userId,
+      token,
+    });
+    return instance.save();
   },
   async get(token) {
-    const db = await openDb(TOKENS_DB_NAME);
-    return db.get(token);
+    return Model.findOne({
+      where: {
+        token,
+      },
+    });
   },
-  // TABLE_NAME,
-  // TABLE_FIELDS,
 };

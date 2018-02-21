@@ -1,16 +1,10 @@
-/**
-*
-* SetPasswordForm
-*
-*/
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import Loader from '../Loader';
 
 const Container = styled.div`
   margin: auto;
@@ -32,36 +26,14 @@ const ContentContainer = styled.div`
   position: relative;
 `;
 
-const ProgressContainer = styled.div`
-  background-color: rgba(0,0,0,0.1);
-  position: absolute;
-  height: 100%;
-  padding-top: 75px;
-  text-align: center;
-  z-index: 2;
-  width: 100%;
-`;
-
-
-function getErrorText(error) {
-  const errorMessages = {
-    500: 'messages.serverError.defaultMessage',
-    400: 'messages.incorrectCredentials.defaultMessage',
-  };
-
-  return error ? errorMessages[error.statusCode] : '';
-}
-
 function SetPasswordForm(props) {
   const {
-    error,
+    isFetching,
     onSubmit,
+    password,
+    passwordChanged,
+    error,
   } = props;
-  let password = props.password || '';
-
-  function passwordChanged(e, value) {
-    password = value;
-  }
 
   return (
     <Container>
@@ -72,18 +44,17 @@ function SetPasswordForm(props) {
           </Header>
         </Paper>
         <ContentContainer>
-          {props.isFetching &&
-            <ProgressContainer>
-              <CircularProgress />
-            </ProgressContainer>
+          {isFetching &&
+            <Loader />
           }
           <Content>
             <TextField
               type="password"
               floatingLabelText="Password"
               fullWidth
+              value={password}
               onChange={passwordChanged}
-              errorText={getErrorText(error)}
+              errorText={error}
             />
             <RaisedButton
               primary
@@ -99,18 +70,19 @@ function SetPasswordForm(props) {
 }
 
 SetPasswordForm.propTypes = {
-  error: PropTypes.shape({
-    statusCode: PropTypes.number,
-  }),
+  error: PropTypes.string,
   password: PropTypes.string,
   isFetching: PropTypes.bool,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
+  passwordChanged: PropTypes.func,
 };
 
 SetPasswordForm.defaultProps = {
   isFetching: false,
   error: null,
   password: '',
+  onSubmit: () => {},
+  passwordChanged: () => {},
 };
 
 export default SetPasswordForm;

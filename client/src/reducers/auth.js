@@ -10,6 +10,14 @@ const defaultState = {
     username: '',
     password: '',
   },
+
+  resetPasswordForm: {
+    email: '',
+  },
+
+  setPasswordForm: {
+    password: '',
+  },
 };
 
 export default function authReducers(state = defaultState, action) {
@@ -59,6 +67,18 @@ export default function authReducers(state = defaultState, action) {
       return {
         ...state,
         authForm: action.payload,
+      };
+    // resetPassword form
+    case auth.RESET_PASSWORD_SET_FORM:
+      return {
+        ...state,
+        resetPasswordForm: action.payload,
+      };
+    // setPassword form
+    case auth.SET_PASSWORD_SET_FORM:
+      return {
+        ...state,
+        setPasswordForm: action.payload,
       };
 
     default:

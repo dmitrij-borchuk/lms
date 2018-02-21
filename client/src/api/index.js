@@ -1,7 +1,5 @@
 import authActions from './auth';
+import eventsActions from './events';
 
 export const auth = authActions;
-
-export default {
-  auth,
-};
+export const events = eventsActions;

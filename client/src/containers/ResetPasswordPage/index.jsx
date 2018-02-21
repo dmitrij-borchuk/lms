@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import { auth } from '../../actions';
-import ResetPasswordForm from '../../components/ResetPasswordForm';
+import ResetPasswordForm from '../../components/ResetPasswordForm/container';
 
 class ResetPasswordPage extends PureComponent {
   state = {

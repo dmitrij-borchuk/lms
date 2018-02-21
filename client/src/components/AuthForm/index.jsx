@@ -1,35 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 // import { FormattedMessage } from 'react-intl';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import Loader from '../Loader';
-
+import { LinkBtn } from '../../commonStyles';
+import {
+  Container,
+  Header,
+  Content,
+  ContentContainer,
+  BottomLink,
+} from './styles';
 
 // import messages from './messages';
-
-const Container = styled.div`
-  margin: auto;
-  padding: 50px 0;
-  width: 300px;
-`;
-
-const Header = styled.div`
-  padding: 20px;
-  background-color: #19aa8d;
-  color: #fff;
-`;
-
-const Content = styled.div`
-  padding: 20px;
-`;
-
-const ContentContainer = styled.div`
-  position: relative;
-`;
 
 function AuthForm(props) {
   const {
@@ -75,6 +61,11 @@ function AuthForm(props) {
               onClick={() => { onSubmit({ username, password }); }}
               disabled={isFetching}
             />
+            <BottomLink>
+              <LinkBtn href="/resetPassword">
+                Forgot password
+              </LinkBtn>
+            </BottomLink>
           </Content>
 
           {isFetching &&

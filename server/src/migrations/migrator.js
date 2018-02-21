@@ -6,7 +6,7 @@ async function runNext(migrations, v, index, setDbVersion) {
       await currentMigration.script();
       await setDbVersion(currentMigration.version);
     }
-    await runNext(migrations, v, index + 1);
+    await runNext(migrations, v, index + 1, setDbVersion);
   }
 }
 

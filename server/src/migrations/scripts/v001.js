@@ -1,13 +1,9 @@
-import { SYSTEM_DB_NAME } from '../../constants';
-import openDb from '../../services/fileDB';
-
-async function script() {
-  const db = await openDb(SYSTEM_DB_NAME);
-  return db.set('initiated', false);
-}
+import { Model } from '../../dal/users';
 
 export default {
   version: 1,
   message: 'Created "users" table',
-  script,
+  async script() {
+    return Model.sync();
+  },
 };

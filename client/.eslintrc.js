@@ -17,6 +17,7 @@ module.exports = {
       }
     ],
     "function-paren-newline": 0,
+    "import/prefer-default-export": 0,
   },
   "settings": {
     "flowtype": {
@@ -25,5 +26,5 @@ module.exports = {
   },
   "globals": {
     "document": true
-  }
+  },
 };
