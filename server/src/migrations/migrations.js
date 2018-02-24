@@ -3,12 +3,12 @@ import { SYSTEM_DB_NAME } from '../constants';
 import openDb from '../services/fileDB';
 import mf1 from './scripts/v001';
 import mf2 from './scripts/v002';
-// import mf3 from './scripts/v003';
+import mf3 from './scripts/v003';
 
 const migrations = [
   mf1,
   mf2,
-  // mf3,
+  mf3,
 ];
 
 async function setDbVersion(v) {

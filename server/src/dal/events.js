@@ -1,24 +1,24 @@
-import uuidv4 from 'uuid/v4';
-import openDb from '../services/fileDB';
-import { EVENTS_DB_NAME } from '../constants';
+import Sequelize from 'sequelize';
+import sequelize from '../services/sequelize';
+
+export const Model = sequelize.define('event', {
+  date: Sequelize.DATE,
+  name: Sequelize.STRING,
+});
 
 export default {
   async create(input) {
-    const id = uuidv4();
-    const data = {
-      ...input,
-      id,
-    };
-    const db = await openDb(EVENTS_DB_NAME);
-
-    return db.set(id, data);
+    const instance = Model.build(input);
+    return instance.save();
   },
   async get(id) {
-    const db = await openDb(EVENTS_DB_NAME);
-    return db.get(id);
+    return Model.findOne({
+      where: {
+        id,
+      },
+    });
   },
   async getAll() {
-    const db = await openDb(EVENTS_DB_NAME);
-    return db.data;
+    return Model.findAll();
   },
 };

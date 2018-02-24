@@ -15,7 +15,7 @@ import Loader from './components/Loader';
 class App extends PureComponent {
   static propTypes = {
     currentUser: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.number,
     }),
     isFetching: PropTypes.bool.isRequired,
     getInitialData: PropTypes.func.isRequired,

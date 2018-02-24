@@ -97,7 +97,7 @@ const eventShape = {
   timeTo: PropTypes.shape(timeShape).isRequired,
 };
 Calendar.propTypes = {
-  events: PropTypes.objectOf(PropTypes.shape(eventShape)),
+  events: PropTypes.arrayOf(PropTypes.shape(eventShape)),
 };
 
 Calendar.defaultProps = {
