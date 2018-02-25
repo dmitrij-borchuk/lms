@@ -1,30 +1,26 @@
-/**
-*
-* AppHeader
-*
-*/
-
 import React from 'react';
-// import styled from 'styled-components';
-
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
-
+import PropTypes from 'prop-types';
 import AppBar from 'material-ui/AppBar';
 
-function AppHeader() {
+function AppHeader(props) {
+  const { drawerIconClock } = props;
+
   return (
     <div>
       <AppBar
         title="LMS"
+        onLeftIconButtonClick={drawerIconClock}
       />
     </div>
   );
 }
-// <FormattedMessage {...messages.header} />
 
 AppHeader.propTypes = {
+  drawerIconClock: PropTypes.func,
+};
 
+AppHeader.defaultProps = {
+  drawerIconClock: () => {},
 };
 
 export default AppHeader;

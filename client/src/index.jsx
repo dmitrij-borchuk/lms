@@ -18,13 +18,13 @@ import 'modern-normalize/modern-normalize.css';
 import './index.css';
 // import translationsJson from './translations/en.json';
 import App from './App';
-import LoginContainer from './containers/LoginPage';
-import ResetPasswordPage from './containers/ResetPasswordPage';
-import SetPasswordPage from './containers/SetPasswordPage';
+import LoginContainer from './views/LoginPage';
+import ResetPasswordPage from './views/ResetPasswordPage';
+import SetPasswordPage from './views/SetPasswordPage';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 // Import Language Provider
-// import LanguageProvider from './containers/LanguageProvider';
+// import LanguageProvider from './views/LanguageProvider';
 // Import i18n messages
 // import { translationMessages } from './i18n';
 

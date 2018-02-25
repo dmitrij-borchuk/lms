@@ -9,8 +9,11 @@ import { connect } from 'react-redux';
 
 import './App.css';
 import { loader as loaderAction } from './actions';
-import Dashboard from './containers/Dashboard';
+import Dashboard from './views/Dashboard';
+import PdpPage from './views/PdpPage';
 import Loader from './components/Loader';
+import AppDrawer from './components/AppDrawer/container';
+import AppHeader from './components/AppHeader/container';
 
 class App extends PureComponent {
   static propTypes = {
@@ -53,25 +56,13 @@ class App extends PureComponent {
     } else if (!isFetching) {
       rendering = (
         <div className="App">
-          {/* <AppBar
-            iconElementLeft={
-              <IconButton>
-                {this.state.menuIsOpened ? (
-                  <NavigationClose onTouchTap={() => this.toggleMenu(false)} />
-                ) : (
-                  <NavigationMenu onTouchTap={() => this.toggleMenu(true)} />
-                )}
-              </IconButton>}
-            iconElementRight={<LoggedInMenu />}
-          /> */}
-          {/* <Menu
-            isOpened={this.state.menuIsOpened}
-            onChange={opened => this.toggleMenu(opened)}
-          /> */}
+          <AppHeader />
+          <AppDrawer />
 
           {/* Routing for logged in user */}
           <Switch>
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/pdp" component={PdpPage} />
             {/* <Route path="/users" component={UsersPage} /> */}
             {/* <Route path="/user/:id" component={UserProfilePage} /> */}
 
